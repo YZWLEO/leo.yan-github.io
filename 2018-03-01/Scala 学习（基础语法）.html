@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Scala 学习（基础语法）"/>
+
+
+
+
+  <meta name="keywords" content="Scala," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2018-03-01/Scala 学习（基础语法）.html"/>
+
+
+<meta name="description" content="参考链接-scala_school   下载-快学scala  Scala 特性 12345678910111213141516171819202122232425261. 是一门静态语言2. 基于jvm 的函数式或面向对象编程语言3. spark 编程推荐语言4. scala 可以执行java语言5. scala 语言中一切皆对象6. 闭包，特质#trait7. apply 8. xx=&amp;gt">
+<meta name="keywords" content="Scala">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala 学习（基础语法）">
+<meta property="og:url" content="http://mlyan.top/2018-03-01/Scala 学习（基础语法）.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="参考链接-scala_school   下载-快学scala  Scala 特性 12345678910111213141516171819202122232425261. 是一门静态语言2. 基于jvm 的函数式或面向对象编程语言3. spark 编程推荐语言4. scala 可以执行java语言5. scala 语言中一切皆对象6. 闭包，特质#trait7. apply 8. xx=&amp;gt">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-10T09:12:37.824Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scala 学习（基础语法）">
+<meta name="twitter:description" content="参考链接-scala_school   下载-快学scala  Scala 特性 12345678910111213141516171819202122232425261. 是一门静态语言2. 基于jvm 的函数式或面向对象编程语言3. spark 编程推荐语言4. scala 可以执行java语言5. scala 语言中一切皆对象6. 闭包，特质#trait7. apply 8. xx=&amp;gt">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> Scala 学习（基础语法） - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Scala 学习（基础语法）
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 01 2018
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <blockquote>
+<p><a href="http://twitter.github.io/scala_school/" target="_blank" rel="noopener">参考链接-scala_school</a></p>
+</blockquote>
+<blockquote>
+<p><a href="/images/快学Scala.pdf">下载-快学scala</a></p>
+</blockquote>
+<h4 id="Scala"><a href="#Scala" class="headerlink" title="Scala"></a>Scala</h4><ul>
+<li><p>特性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">1. 是一门静态语言</span><br><span class="line">2. 基于jvm 的函数式或面向对象编程语言</span><br><span class="line">3. spark 编程推荐语言</span><br><span class="line">4. scala 可以执行java语言</span><br><span class="line">5. scala 语言中一切皆对象</span><br><span class="line">6. 闭包，特质#trait</span><br><span class="line">7. apply </span><br><span class="line">8. xx=&gt;_ #隐藏方法</span><br><span class="line">9. 高阶函数处理/匿名函数 map filter reduce</span><br><span class="line"></span><br><span class="line">10. List Set Tuple Map</span><br><span class="line"></span><br><span class="line">11. 集合操作</span><br><span class="line">   foreache (map 区别有无返回值)</span><br><span class="line">   map </span><br><span class="line">   filter</span><br><span class="line">   zip</span><br><span class="line">   partition</span><br><span class="line">   flatten</span><br><span class="line">   flatmap(flatten+map)</span><br><span class="line"></span><br><span class="line">12 . 泛型类  泛型方法</span><br><span class="line"></span><br><span class="line">13. 隐式参数 方法 类</span><br><span class="line"></span><br><span class="line">14. 包、对象 匹配模式</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>语法</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//感觉有点python的语法但又与众不同  </span></span><br><span class="line"><span class="number">1.</span> 语句末尾 ; 一般不写 （可选）</span><br><span class="line"><span class="number">2.</span> 函数一般不写<span class="keyword">return</span>  最后一行为返回值</span><br><span class="line"><span class="number">3.</span> 同java/php注释一样，支持单行 多行注释</span><br><span class="line"><span class="number">4.</span> <span class="keyword">var</span> 变量   <span class="keyword">val</span> 不可变变量 格式 <span class="keyword">val</span> or <span class="keyword">val</span> <span class="type">VariableName</span> : <span class="type">DataType</span> = [<span class="type">Initial</span> <span class="type">Value</span>]</span><br><span class="line"><span class="number">5.</span> 保护域 <span class="keyword">private</span>[<span class="type">XX</span>]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/Scala/">Scala</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018-04-11/计算机系统概要.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">计算机系统概要</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017-12-05/Hadoop 环境安装步骤学习.html">
+        <span class="next-text nav-default">Hadoop 环境搭建</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

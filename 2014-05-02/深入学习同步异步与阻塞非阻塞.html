@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)"/>
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2014-05-02/深入学习同步异步与阻塞非阻塞.html"/>
+
+
+<meta name="description" content="max(RPL, CPL) &amp;lt;= DPL 系统调用访问控制123RPL: Requested Privilege Level, 当前进程请求特权级 DPL: Descriptor Privilege Level，描述符特权级 CPL: Current Privilege Level，当前进程特权级 进程切换使得 CPU 的控制权会从当前进程转移到操作系统内核 + 中断(信号) interru">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同步(Sync)&#x2F;异步(Async)，阻塞(Block)&#x2F;非阻塞(Unblock)">
+<meta property="og:url" content="http://mlyan.top/2014-05-02/深入学习同步异步与阻塞非阻塞.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="max(RPL, CPL) &amp;lt;= DPL 系统调用访问控制123RPL: Requested Privilege Level, 当前进程请求特权级 DPL: Descriptor Privilege Level，描述符特权级 CPL: Current Privilege Level，当前进程特权级 进程切换使得 CPU 的控制权会从当前进程转移到操作系统内核 + 中断(信号) interru">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/io/tongbuzuse.png">
+<meta property="og:image" content="http://mlyan.top/images/io/noneblockio.png">
+<meta property="og:image" content="http://mlyan.top/images/io/mutipblock.png">
+<meta property="og:image" content="http://mlyan.top/images/io/asynio.png">
+<meta property="og:updated_time" content="2018-05-14T12:24:42.928Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="同步(Sync)&#x2F;异步(Async)，阻塞(Block)&#x2F;非阻塞(Unblock)">
+<meta name="twitter:description" content="max(RPL, CPL) &amp;lt;= DPL 系统调用访问控制123RPL: Requested Privilege Level, 当前进程请求特权级 DPL: Descriptor Privilege Level，描述符特权级 CPL: Current Privilege Level，当前进程特权级 进程切换使得 CPU 的控制权会从当前进程转移到操作系统内核 + 中断(信号) interru">
+<meta name="twitter:image" content="http://mlyan.top/images/io/tongbuzuse.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock) - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)
+        
+      </h1>
+
+      <time class="post-time">
+          May 02 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h5 id="max-RPL-CPL-lt-DPL-系统调用访问控制"><a href="#max-RPL-CPL-lt-DPL-系统调用访问控制" class="headerlink" title="max(RPL, CPL) &lt;= DPL 系统调用访问控制"></a>max(RPL, CPL) &lt;= DPL 系统调用访问控制</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RPL: Requested Privilege Level, 当前进程请求特权级 </span><br><span class="line">DPL: Descriptor Privilege Level，描述符特权级 </span><br><span class="line">CPL: Current Privilege Level，当前进程特权级</span><br></pre></td></tr></table></figure>
+<h4 id="进程切换"><a href="#进程切换" class="headerlink" title="进程切换"></a>进程切换</h4><pre><code>使得 CPU 的控制权会从当前进程转移到操作系统内核
++ 中断(信号) interrupt
++ 系统调用 system call
+</code></pre><blockquote>
+<p>进程切换 会进行一系列的内存读写与IO操作，带来系统开销增加</p>
+</blockquote>
+<h4 id="进程执行状态-同理多线程编程中-java-thread-线程状态亦是如此"><a href="#进程执行状态-同理多线程编程中-java-thread-线程状态亦是如此" class="headerlink" title="进程执行状态(同理多线程编程中(java thread)线程状态亦是如此)"></a>进程执行状态(同理多线程编程中(java thread)线程状态亦是如此)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    1. New 新建（正在创建）</span><br><span class="line">    2. Running 正在执行</span><br><span class="line">    3. Waiting 等待其他指令执行</span><br><span class="line">    4. Ready 进程准备完毕，等待被系统调度</span><br><span class="line">    5. Terminated 执行完毕（正常执行完毕和被强制终止执行）</span><br><span class="line"></span><br><span class="line">##############</span><br><span class="line">    在单核处理器上，同一时刻，只可能运行一个进程</span><br></pre></td></tr></table></figure>
+<h4 id="I-O-复用模型"><a href="#I-O-复用模型" class="headerlink" title="I/O 复用模型"></a>I/O 复用模型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">网络编程一书中有明确的指出如下：</span><br><span class="line">1. 阻塞式 I/O</span><br><span class="line">2. 非阻塞式 I/O</span><br><span class="line">3. I/O 复用( select ,poll..)</span><br><span class="line">4. 信号驱动 SIGIO</span><br><span class="line">5. 异步I/O (aio iocp..)</span><br><span class="line"></span><br><span class="line">前四个全是同步的，只有最后一个是异步的</span><br></pre></td></tr></table></figure>
+<h5 id="同步阻塞"><a href="#同步阻塞" class="headerlink" title="同步阻塞"></a>同步阻塞</h5><p><img src="/images/io/tongbuzuse.png" alt="image"></p>
+<h5 id="同步非阻塞"><a href="#同步非阻塞" class="headerlink" title="同步非阻塞"></a>同步非阻塞</h5><p><img src="/images/io/noneblockio.png" alt="image"></p>
+<h5 id="多路I-O-复用（使用最多的模型）"><a href="#多路I-O-复用（使用最多的模型）" class="headerlink" title="多路I/O 复用（使用最多的模型）"></a>多路I/O 复用（使用最多的模型）</h5><ul>
+<li>IO 多路复用依赖操作系统 select poll 和epoll(内核在&gt;=2.6以上支持)</li>
+<li>Netty /Nginx /Node</li>
+<li><p>select 使用中的问题</p>
+<ol>
+<li>本质上是通过设置或者监听fd标志位的读、写和异常描述符<br> cat /proc/sys/fs/file-max</li>
+<li>select 操作逻辑 先将要监听的读、写、异常描述符拷贝到内核空间，然后遍历所有描述符，如果有关注的事件发生了，就返回</li>
+<li>问题<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 被监控的fds 描述符 集合限制为1024 （相比起来太小）</span><br><span class="line">2. 需要将fds从用户空间拷贝到内核空间</span><br><span class="line">3. 需要遍历整个fds集合才能确定调用，效率low</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>poll 与 select 操作类似</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 不再有1024描述符集合限制</span><br><span class="line">2. 仍需要拷贝fds从用户空间到内核空间</span><br><span class="line">3. 须要遍历描述符集合</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>epoll liunx独有的</p>
+<ol>
+<li>epoll_create 创建资源 epoll_ctl 注册要监听事件类型  epoll_wait 等待事件发生</li>
+<li>有效的解决select 的效率问题<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 没有最大并发连接限制</span><br><span class="line">2. 效率提升，不是轮询，只有活跃可用的fd才会调用callback </span><br><span class="line">3. 内存拷贝 利用 mmap 文件映射内存加速与内核数据交换 减少复制开销（共享内存块实现）</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<p><img src="/images/io/mutipblock.png" alt="image"></p>
+<h5 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h5><p><img src="/images/io/asynio.png" alt="image"></p>
+<h4 id="简单理解"><a href="#简单理解" class="headerlink" title="简单理解"></a>简单理解</h4><ul>
+<li>网络IO从操作系统角度，cpu层次来说可以抽象理解为：用户态和内核态之间数据交换处理方式<ol>
+<li>用户态 等待内核态数据准备好</li>
+<li>将数据从内核态到用户态的拷贝</li>
+</ol>
+</li>
+<li><p>&lt;&lt;操作系统概念&gt;&gt; 进程间通信有两个基本操作 send /receive</p>
+<ol>
+<li><p>阻塞式发送 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送方进程会被一直阻塞， 直到消息被接受方进程收到</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非阻塞式发送</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送方进程调用 send() 后， 立即就可以其他操作</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>阻塞式接收</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">接收方调用 receive() 后一直阻塞， 直到消息到达可用</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非阻塞式接收</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">接收方调用 receive() 函数后， 要么得到一个有效的结果， 要么得到一个空值， 即不会被阻塞</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>同步异步 关注的是消息通信机制 (synchronous communication/ asynchronous communication) </p>
+<ol>
+<li><p>同步 one by one</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发出一个调用时，在没有得到结果之前， 该调用就不返回</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>异步</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">调用在发出之后，这个调用就直接返回了，所以没有返回结果</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>阻塞/非阻塞关注的是程序在等待调用结果（消息，返回值）时的状态(注：描述的是状态 联想下java多线程 start await notify)</p>
+<ol>
+<li><p>阻塞</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">指调用结果返回之前，当前线程会被挂起。调用线程只有在得到结果之后才会返回</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非阻塞</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">调用指在不能立刻得到结果之前，该调用不会阻塞当前线程(继续执行其他任务)</span><br></pre></td></tr></table></figure>
+<p>区别：</p>
+<p>非阻塞I/O 系统调用read()，返回的是任何可以立即拿到的数据， 可以是完整的结果， 也可以是不完整的结果， 还可以是一个空值</p>
+<p>异步I/O系统调用 read（）结果必须是完整的， 但是这个操作完成的通知可以延迟到将来的一个时间点</p>
+<p>同步和异步关注数据访问的时候进程是否阻塞</p>
+<p>阻塞和非阻塞关注应用程序的调用是否立即返回</p>
+</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>持续更新     </p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014-08-25/PHP 中 = 、== 、=== 三者区别.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">PHP 中 = 、== 、=== 三者区别</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2012-05-10/文件查找相关.html">
+        <span class="next-text nav-default">文件相关</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

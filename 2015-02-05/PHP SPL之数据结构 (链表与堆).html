@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="PHP PHP SPL之数据结构 (链表与堆)"/>
+
+
+
+
+  <meta name="keywords" content="PHP,数据结构," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2015-02-05/PHP SPL之数据结构 (链表与堆).html"/>
+
+
+<meta name="description" content="参考文档#SPL官网 SPL1SPL是用于解决典型问题(standard problems)的一组接口与类的集合  PHP 作为一门web快速开发语言，我认为重点在于数组 上层接口提供给应用层快速数据的转化处理能力（各种Array函数） 底层实现在于数据结构定义与组织（堆、栈、链表、迭代器等） 核心在于各种算法（线性存储、hash、map）实现 SPL給php增添的魅力毫不逊于其他语言（php是世">
+<meta name="keywords" content="PHP,数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP PHP SPL之数据结构 (链表与堆)">
+<meta property="og:url" content="http://mlyan.top/2015-02-05/PHP SPL之数据结构 (链表与堆).html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="参考文档#SPL官网 SPL1SPL是用于解决典型问题(standard problems)的一组接口与类的集合  PHP 作为一门web快速开发语言，我认为重点在于数组 上层接口提供给应用层快速数据的转化处理能力（各种Array函数） 底层实现在于数据结构定义与组织（堆、栈、链表、迭代器等） 核心在于各种算法（线性存储、hash、map）实现 SPL給php增添的魅力毫不逊于其他语言（php是世">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-16T11:06:57.296Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP PHP SPL之数据结构 (链表与堆)">
+<meta name="twitter:description" content="参考文档#SPL官网 SPL1SPL是用于解决典型问题(standard problems)的一组接口与类的集合  PHP 作为一门web快速开发语言，我认为重点在于数组 上层接口提供给应用层快速数据的转化处理能力（各种Array函数） 底层实现在于数据结构定义与组织（堆、栈、链表、迭代器等） 核心在于各种算法（线性存储、hash、map）实现 SPL給php增添的魅力毫不逊于其他语言（php是世">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> PHP PHP SPL之数据结构 (链表与堆) - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          PHP PHP SPL之数据结构 (链表与堆)
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 05 2015
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p><a href="http://php.net/manual/zh/spl.datastructures.php" target="_blank" rel="noopener">参考文档#SPL官网</a></p>
+<h5 id="SPL"><a href="#SPL" class="headerlink" title="SPL"></a>SPL</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SPL是用于解决典型问题(standard problems)的一组接口与类的集合</span><br></pre></td></tr></table></figure>
+<ul>
+<li>PHP 作为一门web快速开发语言，我认为重点在于数组</li>
+<li>上层接口提供给应用层快速数据的转化处理能力（各种Array函数）</li>
+<li>底层实现在于数据结构定义与组织（堆、栈、链表、迭代器等）</li>
+<li>核心在于各种算法（线性存储、hash、map）实现</li>
+<li>SPL給php增添的魅力毫不逊于其他语言（php是世界最好的语言）</li>
+</ul>
+<h5 id="SplDoublyLinkedList"><a href="#SplDoublyLinkedList" class="headerlink" title="SplDoublyLinkedList"></a>SplDoublyLinkedList</h5><ul>
+<li>双链表 （双向链表）</li>
+<li>存储结构，是线性的</li>
+<li>每个节点不仅保存自己数据也保留前后节点地址（首尾节点除外）</li>
+<li>两端的访问、节点的添加或删除 算法时间复杂度O(1)</li>
+<li>栈和队列提供了一个合适的实现（SplStack / SplQueue）<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">SplDoublyLinkedList implements Iterator , ArrayAccess , Countable &#123;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">ArrayAccess  数据访问接口 简单理解就是实现它的对象可以像数组一样操作 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Countable 可计数的接口  简单理解就是实现它的对象可以被计数总数或长度</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Iterator  继承至Traversable 抽象类  实现它的就等于可用于foreach遍历 （一般对象不能这样玩）</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">SplDoublyLinkedList 就是实现咯上面所有接口的类</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 方法 */</span></span><br><span class="line"><span class="keyword">public</span> __construct ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    新增一个指定位置（索引）的元素</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void add ( mixed $index , mixed $newval )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    Peeks at the node from the beginning of the doubly linked list</span></span><br><span class="line"><span class="comment">    从链表开始的第一个节点，或者顶部节点</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> mixed bottom ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    计算当前链表的元素总个数</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> int count ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    返回当前节点</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> mixed current ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    返回链表迭代模式 0 1 2 见setIteratorMode</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> int getIteratorMode ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    验证链表是否为空</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> bool isEmpty ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    计算当前节点的索引位置</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> mixed key ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    向后移动一个节点 无参数无返回 配合 valid 使用</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void next ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    返回当前索引位置节点是否存在</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> bool offsetExists ( mixed $index )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    返回当指定索引对应的值 不主动验证有效性 可能引发超长范围异常</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> mixed offsetGet ( mixed $index )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    简单理解就是更新By key</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void offsetSet ( mixed $index , mixed $newval )</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    简单理就是 删除 By key</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void offsetUnset ( mixed $index )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    简单理就是 移除链表尾部节点 并返回链表</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> mixed pop ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    简单理就是 移动到上一节点位置  无参数无返回值  </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void prev ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    简单理就是 在链表尾部新增节点 不改变其他节点索引</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void push ( mixed $value )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    重置索引位置  或者指针到链表顶部</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void rewind ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    序列化当前链表对象 返回字符串  同原生函数 serialize unserialize</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> string serialize ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    IT_MODE_LIFO =&gt; int(2) </span></span><br><span class="line"><span class="comment">    IT_MODE_FIFO =&gt; int(0) </span></span><br><span class="line"><span class="comment">    IT_MODE_DELETE =&gt; int(1) </span></span><br><span class="line"><span class="comment">    IT_MODE_KEEP =&gt; int(0)</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    上面是两组迭代模式 </span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        按迭代方向</span></span><br><span class="line"><span class="comment">        SplDoublyLinkedList::IT_MODE_LIFO (Stack style)</span></span><br><span class="line"><span class="comment">        SplDoublyLinkedList::IT_MODE_FIFO (Queue style)</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        按迭代行为</span></span><br><span class="line"><span class="comment">        SplDoublyLinkedList::IT_MODE_DELETE (Elements are deleted by the iterator)</span></span><br><span class="line"><span class="comment">        SplDoublyLinkedList::IT_MODE_KEEP (Elements are traversed by the iterator)</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    默认迭代模式 ：SplDoublyLinkedList::IT_MODE_FIFO | SplDoublyLinkedList::IT_MODE_KEEP</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void setIteratorMode ( int $mode )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    移除链表中的开始节点 同bottom 但是这个是执行删除 并重排索引位置</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> mixed shift ( void )</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    Peeks at the node from the end of the doubly linked list</span></span><br><span class="line"><span class="comment">    返回链表底部节点</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> mixed top ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    按照链表类型反序列化字符串，无返回值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void unserialize ( string $serialized )</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    在链表顶部插入节点 并重新建立其他节点索引位置</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void unshift ( mixed $value )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    主动约束是否越界或元素个数溢出的节点有效性</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> bool valid ( void )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="SplStack"><a href="#SplStack" class="headerlink" title="SplStack"></a>SplStack</h5><ul>
+<li>继承至双向链表 </li>
+<li>特殊的线性表</li>
+<li>实现栈的功能（不绝对）</li>
+<li>LIFO 先进后出  首先是压栈(入队列)  然后出栈（出队列） 就像容器一样  </li>
+</ul>
+<h5 id="SplQueue"><a href="#SplQueue" class="headerlink" title="SplQueue"></a>SplQueue</h5><ul>
+<li>继承至双向链表 </li>
+<li>特殊的线性表</li>
+<li>实现队列功能 生产(入队列)-&gt;消费（出队列）</li>
+<li>FIFO 先进先出<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 两个重要函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    出队列 </span></span><br><span class="line"><span class="comment">    SplQueue::dequeue() is an alias of SplDoublyLinkedList::shift()</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">mixed dequeue ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    入队列 底层实现是push</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">void enqueue ( mixed $value )</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="SplHeap"><a href="#SplHeap" class="headerlink" title="SplHeap"></a>SplHeap</h5><ul>
+<li><p>堆</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">n个元素的序列&#123;k1,k2,ki,…,kn&#125;当且仅当满足下关系时，称之为堆。</span><br><span class="line">(ki &lt;= k2i,ki &lt;= k2i+1)或者(ki &gt;= k2i,ki &gt;= k2i+1), (i = 1,2,3,4...n/2)</span><br><span class="line"></span><br><span class="line">堆中某个节点的值总是不大于或不小于其父节点的值</span><br><span class="line">根节点最大的堆叫做最大堆或大根堆，根节点最小的堆叫做最小堆或小根堆。</span><br><span class="line">常见的堆有二叉堆、斐波那契堆等</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遵循堆属性的树状结构</p>
+</li>
+<li>每个节点都大于或等于其子级, 使用对堆全局的已实现的比较方法进行比较</li>
+<li>常用于堆排序</li>
+<li>算法结构上 堆总是一个完全二叉树</li>
+<li>插入结点、删除普通元素和删除最小元素 平均时间复杂度 O(Log n)</li>
+<li>抽象类 要使用必须继承并实现其方法 实现类【 SplMaxHeap  SplMinHeap 】</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> SplHeap implements Iterator , Countable &#123;</span><br><span class="line"><span class="comment">/* 方法 */</span></span><br><span class="line"><span class="keyword">public</span> __construct ( void )</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    比较元素以便在筛选时正确地放置在堆中 </span></span><br><span class="line"><span class="comment">    返回 整数 0 负数</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">protected</span> int compare ( mixed $value1 , mixed $value2 )</span><br><span class="line"><span class="comment">//  返回堆节点数  </span></span><br><span class="line"><span class="keyword">public</span> int count ( void )</span><br><span class="line"><span class="comment">// 返回迭代指针指向的节点  </span></span><br><span class="line"><span class="keyword">public</span> mixed current ( void )</span><br><span class="line"><span class="comment">// 从堆顶部提取一个节点并重建堆  </span></span><br><span class="line"><span class="keyword">public</span> mixed extract ( void )</span><br><span class="line"><span class="comment">// 向堆中添加一个节点并重建堆  </span></span><br><span class="line"><span class="keyword">public</span> void insert ( mixed $value )</span><br><span class="line"><span class="comment">// Tells if the heap is in a corrupted state</span></span><br><span class="line"><span class="comment">//  堆是否有错误或损坏  返回bool</span></span><br><span class="line"><span class="keyword">public</span> bool isCorrupted ( void )</span><br><span class="line"><span class="comment">// 判断是否为空堆  </span></span><br><span class="line"><span class="keyword">public</span> bool isEmpty ( void )</span><br><span class="line"><span class="comment">// 返回当前堆指针指向的节点的键</span></span><br><span class="line"><span class="keyword">public</span> mixed key ( void )</span><br><span class="line"><span class="comment">// 迭代指针指向下一节点  </span></span><br><span class="line"><span class="keyword">public</span> void next ( void )</span><br><span class="line"><span class="comment">// 恢复堆  </span></span><br><span class="line"><span class="keyword">public</span> void recoverFromCorruption ( void )</span><br><span class="line"><span class="comment">// 重置迭代指针</span></span><br><span class="line"><span class="keyword">public</span> void rewind ( void )</span><br><span class="line"><span class="comment">// 返回堆的顶部节点 </span></span><br><span class="line"><span class="keyword">public</span> mixed top ( void )</span><br><span class="line"><span class="keyword">public</span> bool valid ( void )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Heap Demo</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$heap = <span class="keyword">new</span> SplMaxHeap();</span><br><span class="line">$heap-&gt;insert(<span class="number">1</span>);</span><br><span class="line">$heap-&gt;insert(<span class="number">10</span>);</span><br><span class="line">$heap-&gt;insert(<span class="number">100</span>);</span><br><span class="line">$heap-&gt;insert(<span class="number">31</span>);</span><br><span class="line">$heap-&gt;insert(<span class="number">41</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"SplMaxHeap"</span>.PHP_EOL;</span><br><span class="line">print_r($heap);</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ($heap-&gt;valid())&#123;</span><br><span class="line">    print_r($heap-&gt;current());</span><br><span class="line">    <span class="keyword">echo</span> PHP_EOL;</span><br><span class="line"></span><br><span class="line">    $heap-&gt;next();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$heap = <span class="keyword">new</span> SplMinHeap();</span><br><span class="line">$heap-&gt;insert(<span class="number">1</span>);</span><br><span class="line">$heap-&gt;insert(<span class="number">10</span>);</span><br><span class="line">$heap-&gt;insert(<span class="number">100</span>);</span><br><span class="line">$heap-&gt;insert(<span class="number">31</span>);</span><br><span class="line">$heap-&gt;insert(<span class="number">41</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"SplMinHeap"</span>.PHP_EOL;</span><br><span class="line">print_r($heap);</span><br><span class="line"><span class="keyword">while</span> ($heap-&gt;valid())&#123;</span><br><span class="line">    print_r($heap-&gt;current());</span><br><span class="line">    <span class="keyword">echo</span> PHP_EOL;</span><br><span class="line"></span><br><span class="line">    $heap-&gt;next();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*  输出 */</span></span><br><span class="line"></span><br><span class="line">SplMaxHeap</span><br><span class="line">SplMaxHeap Object</span><br><span class="line">(</span><br><span class="line">    [flags:SplHeap:<span class="keyword">private</span>] =&gt; <span class="number">0</span></span><br><span class="line">    [isCorrupted:SplHeap:<span class="keyword">private</span>] =&gt;</span><br><span class="line">    [heap:SplHeap:<span class="keyword">private</span>] =&gt; <span class="keyword">Array</span></span><br><span class="line">        (</span><br><span class="line">            [<span class="number">0</span>] =&gt; <span class="number">100</span></span><br><span class="line">            [<span class="number">1</span>] =&gt; <span class="number">41</span></span><br><span class="line">            [<span class="number">2</span>] =&gt; <span class="number">10</span></span><br><span class="line">            [<span class="number">3</span>] =&gt; <span class="number">1</span></span><br><span class="line">            [<span class="number">4</span>] =&gt; <span class="number">31</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"><span class="number">100</span></span><br><span class="line"><span class="number">41</span></span><br><span class="line"><span class="number">31</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">SplMinHeap</span><br><span class="line">SplMinHeap Object</span><br><span class="line">(</span><br><span class="line">    [flags:SplHeap:<span class="keyword">private</span>] =&gt; <span class="number">0</span></span><br><span class="line">    [isCorrupted:SplHeap:<span class="keyword">private</span>] =&gt;</span><br><span class="line">    [heap:SplHeap:<span class="keyword">private</span>] =&gt; <span class="keyword">Array</span></span><br><span class="line">        (</span><br><span class="line">            [<span class="number">0</span>] =&gt; <span class="number">1</span></span><br><span class="line">            [<span class="number">1</span>] =&gt; <span class="number">10</span></span><br><span class="line">            [<span class="number">2</span>] =&gt; <span class="number">100</span></span><br><span class="line">            [<span class="number">3</span>] =&gt; <span class="number">31</span></span><br><span class="line">            [<span class="number">4</span>] =&gt; <span class="number">41</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">31</span></span><br><span class="line"><span class="number">41</span></span><br><span class="line"><span class="number">100</span></span><br></pre></td></tr></table></figure>
+<h4 id="SplPriorityQueue"><a href="#SplPriorityQueue" class="headerlink" title="SplPriorityQueue"></a>SplPriorityQueue</h4><ul>
+<li>优先级队列</li>
+<li>FIFO 并且提供权重级别插队机制</li>
+<li>区别于继承双向链表的 SplQueue</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">SplPriorityQueue implements Iterator , Countable &#123;</span><br><span class="line"><span class="comment">/* 方法 */</span></span><br><span class="line"><span class="keyword">public</span> __construct ( void )</span><br><span class="line"><span class="keyword">public</span> int compare ( mixed $priority1 , mixed $priority2 )</span><br><span class="line"><span class="keyword">public</span> int count ( void )</span><br><span class="line"><span class="keyword">public</span> mixed current ( void )</span><br><span class="line"><span class="keyword">public</span> mixed extract ( void )</span><br><span class="line"><span class="keyword">public</span> int getExtractFlags ( void )</span><br><span class="line"><span class="keyword">public</span> void insert ( mixed $value , mixed $priority )</span><br><span class="line"><span class="keyword">public</span> bool isCorrupted ( void )</span><br><span class="line"><span class="keyword">public</span> bool isEmpty ( void )</span><br><span class="line"><span class="keyword">public</span> mixed key ( void )</span><br><span class="line"><span class="keyword">public</span> void next ( void )</span><br><span class="line"><span class="keyword">public</span> void recoverFromCorruption ( void )</span><br><span class="line"><span class="keyword">public</span> void rewind ( void )</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    Defines what is extracted by SplPriorityQueue::current(), SplPriorityQueue::top() and SplPriorityQueue::extract().</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    SplPriorityQueue::EXTR_DATA (0x00000001): Extract the data  仅抽取值比较</span></span><br><span class="line"><span class="comment">    SplPriorityQueue::EXTR_PRIORITY (0x00000002): Extract the priority 仅抽取优先级</span></span><br><span class="line"><span class="comment">    SplPriorityQueue::EXTR_BOTH (0x00000003): Extract an array containing both 数组包含值和优先级</span></span><br><span class="line"><span class="comment">    The default mode is SplPriorityQueue::EXTR_DATA.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> void setExtractFlags ( int $flags )</span><br><span class="line"><span class="keyword">public</span> mixed top ( void )</span><br><span class="line"><span class="keyword">public</span> bool valid ( void )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>SplPriorityQueue DEMO<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$queue = <span class="keyword">new</span> SplPriorityQueue();</span><br><span class="line">$queue-&gt;insert(<span class="string">"A"</span>,<span class="number">100</span>);</span><br><span class="line">$queue-&gt;insert(<span class="string">"D"</span>,<span class="number">200</span>);</span><br><span class="line">$queue-&gt;insert(<span class="string">"C"</span>,<span class="number">10</span>);</span><br><span class="line">$queue-&gt;insert(<span class="string">"B"</span>,<span class="number">50</span>);</span><br><span class="line">print_r($queue-&gt;top());</span><br><span class="line"><span class="keyword">echo</span> PHP_EOL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> ($queue-&gt;valid())&#123;</span><br><span class="line">    print_r($queue-&gt;current());</span><br><span class="line">    <span class="keyword">echo</span> PHP_EOL;</span><br><span class="line">    $queue-&gt;next();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     默认排序</span></span><br><span class="line"><span class="comment">D</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">D</span></span><br><span class="line"><span class="comment">A</span></span><br><span class="line"><span class="comment">B</span></span><br><span class="line"><span class="comment">C</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// 抽取优先级排序</span></span><br><span class="line"><span class="comment">$queue-&gt;setExtractFlags(SplPriorityQueue::EXTR_PRIORITY);</span></span><br><span class="line"><span class="comment">while ($queue-&gt;valid())&#123;</span></span><br><span class="line"><span class="comment">    print_r($queue-&gt;current());</span></span><br><span class="line"><span class="comment">    echo PHP_EOL;</span></span><br><span class="line"><span class="comment">    $queue-&gt;next();</span></span><br><span class="line"><span class="comment">&#125;*/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">        200</span></span><br><span class="line"><span class="comment">        100</span></span><br><span class="line"><span class="comment">        50</span></span><br><span class="line"><span class="comment">        10</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 抽取优先级和数据</span></span><br><span class="line">$queue-&gt;setExtractFlags(SplPriorityQueue::EXTR_BOTH);</span><br><span class="line"><span class="keyword">while</span> ($queue-&gt;valid())&#123;</span><br><span class="line">    print_r($queue-&gt;current());</span><br><span class="line">    <span class="keyword">echo</span> PHP_EOL;</span><br><span class="line">    $queue-&gt;next();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">        Array</span></span><br><span class="line"><span class="comment">        (</span></span><br><span class="line"><span class="comment">            [data] =&gt; D</span></span><br><span class="line"><span class="comment">            [priority] =&gt; 200</span></span><br><span class="line"><span class="comment">        )</span></span><br><span class="line"><span class="comment">        </span></span><br><span class="line"><span class="comment">        Array</span></span><br><span class="line"><span class="comment">        (</span></span><br><span class="line"><span class="comment">            [data] =&gt; A</span></span><br><span class="line"><span class="comment">            [priority] =&gt; 100</span></span><br><span class="line"><span class="comment">        )</span></span><br><span class="line"><span class="comment">        </span></span><br><span class="line"><span class="comment">        Array</span></span><br><span class="line"><span class="comment">        (</span></span><br><span class="line"><span class="comment">            [data] =&gt; B</span></span><br><span class="line"><span class="comment">            [priority] =&gt; 50</span></span><br><span class="line"><span class="comment">        )</span></span><br><span class="line"><span class="comment">        </span></span><br><span class="line"><span class="comment">        Array</span></span><br><span class="line"><span class="comment">        (</span></span><br><span class="line"><span class="comment">            [data] =&gt; C</span></span><br><span class="line"><span class="comment">            [priority] =&gt; 10</span></span><br><span class="line"><span class="comment">        )</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+			<a href="/tags/数据结构/">数据结构</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2015-02-28/PHP SPL之数据结构 (数组与隐射).html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">PHP SPL之数据结构 (数组与隐射)</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014-10-05/Apache 执行流程与运行模式.html">
+        <span class="next-text nav-default">Apache 运行机制</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

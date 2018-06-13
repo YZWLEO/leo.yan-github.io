@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="PHP性能优化"/>
+
+
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2016-05-25/PHP性能优化.html"/>
+
+
+<meta name="description" content="怎样做项目优化12345678+ 从代码架构层面做语言级优化,语言内置函数优化    eg:做相关基线测试，只做擅长的事,IO密集型处理和CPU密集型事务选择+ 从硬件或网络层面做基础设施优化，    eg:升级带宽，RAID整理,扩展CPU+ 周边服务优化     eg:static、cache 、pool、mysql优化、net...+ 架构优化    eg:消息分发是否合理，是否单点故障，H">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP性能优化">
+<meta property="og:url" content="http://mlyan.top/2016-05-25/PHP性能优化.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="怎样做项目优化12345678+ 从代码架构层面做语言级优化,语言内置函数优化    eg:做相关基线测试，只做擅长的事,IO密集型处理和CPU密集型事务选择+ 从硬件或网络层面做基础设施优化，    eg:升级带宽，RAID整理,扩展CPU+ 周边服务优化     eg:static、cache 、pool、mysql优化、net...+ 架构优化    eg:消息分发是否合理，是否单点故障，H">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/php_redo.png">
+<meta property="og:image" content="http://mlyan.top/images/php_origin.png">
+<meta property="og:image" content="http://mlyan.top/images/php_fenxi.png">
+<meta property="og:updated_time" content="2018-04-26T11:38:24.905Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP性能优化">
+<meta name="twitter:description" content="怎样做项目优化12345678+ 从代码架构层面做语言级优化,语言内置函数优化    eg:做相关基线测试，只做擅长的事,IO密集型处理和CPU密集型事务选择+ 从硬件或网络层面做基础设施优化，    eg:升级带宽，RAID整理,扩展CPU+ 周边服务优化     eg:static、cache 、pool、mysql优化、net...+ 架构优化    eg:消息分发是否合理，是否单点故障，H">
+<meta name="twitter:image" content="http://mlyan.top/images/php_redo.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> PHP性能优化 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          PHP性能优化
+        
+      </h1>
+
+      <time class="post-time">
+          May 25 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="怎样做项目优化"><a href="#怎样做项目优化" class="headerlink" title="怎样做项目优化"></a>怎样做项目优化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+ 从代码架构层面做语言级优化,语言内置函数优化</span><br><span class="line">    eg:做相关基线测试，只做擅长的事,IO密集型处理和CPU密集型事务选择</span><br><span class="line">+ 从硬件或网络层面做基础设施优化，</span><br><span class="line">    eg:升级带宽，RAID整理,扩展CPU</span><br><span class="line">+ 周边服务优化 </span><br><span class="line">    eg:static、cache 、pool、mysql优化、net...</span><br><span class="line">+ 架构优化</span><br><span class="line">    eg:消息分发是否合理，是否单点故障，HA可行性、集群方案、SOA服务化模块化应用实现分布式部署</span><br></pre></td></tr></table></figure>
+<h4 id="PHP代码优化"><a href="#PHP代码优化" class="headerlink" title="PHP代码优化"></a>PHP代码优化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">+ 根据一般项目优化原则，先做php代码自身的优化 </span><br><span class="line">eg:尽量使用自身的内置函数实现</span><br><span class="line">eg:减少魔术函数使用</span><br><span class="line">eg:减少使用错误抑制符@ 影响opcodes行数</span><br><span class="line">eg:合理使用正则表达式(性能低) 合理unset回收变量</span><br><span class="line">eg:减少在循环体内做运算</span><br><span class="line">eg:单引号 与双引号 如果是数组  尽量用字符串键值</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">+ PHP代码组织架构的优化 eg:PSR-4 安装一定的命名空间组织代码</span><br><span class="line"></span><br><span class="line">+ php深度优化，C底层实现方面,eg:相同功能不同实现函数的优化</span><br><span class="line"></span><br><span class="line">+ php不同版本升级优化 eg:5.3 5.6 7.X</span><br></pre></td></tr></table></figure>
+<h4 id="做基线代码测试"><a href="#做基线代码测试" class="headerlink" title="做基线代码测试"></a>做基线代码测试</h4><ul>
+<li>自己实现与使用php自身实现比较<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 随机产生两个分别数组然后合并</span><br><span class="line"></span><br><span class="line">$arr_1 = [];</span><br><span class="line">for ($i = 0; $i &lt; rand(1000, 2000); $i++) &#123;</span><br><span class="line">    $arr_1[] = rand();</span><br><span class="line">&#125;</span><br><span class="line">$arr_2 = [];</span><br><span class="line">for ($i = 0; $i &lt; rand(1000, 2000); $i++) &#123;</span><br><span class="line">    $arr_2[] = rand();</span><br><span class="line">&#125;</span><br><span class="line">//合并</span><br><span class="line">$arr_merge = [];</span><br><span class="line">foreach ($arr_1 as $item) &#123;</span><br><span class="line">    $arr_merge[] = $item;</span><br><span class="line">&#125;</span><br><span class="line">foreach ($arr_2 as $item) &#123;</span><br><span class="line">    if (in_array($item, $arr_merge)) &#123;</span><br><span class="line">        continue;</span><br><span class="line">    &#125;</span><br><span class="line">    $arr_merge[] = $item;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;pre&gt;&quot;;</span><br><span class="line">var_export($arr_merge);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/images/php_redo.png" alt="image"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//生成</span><br><span class="line">$arr1 = $arr2 = range(1000, 2000);</span><br><span class="line">$arr_merged = array();</span><br><span class="line">//洗牌</span><br><span class="line">shuffle($arr1);</span><br><span class="line">shuffle($arr2);</span><br><span class="line">//合并</span><br><span class="line">$arr_merged = array_merge($arr1, $arr2);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;pre&gt;&quot;;</span><br><span class="line">var_export($arr_merged);</span><br></pre></td></tr></table></figure>
+<p><img src="/images/php_origin.png" alt="image"></p>
+<blockquote>
+<p>同时用1000个请求100个并发做压测对比:<br><img src="/images/php_fenxi.png" alt="image"></p>
+<ul>
+<li>可以明显看出时间复杂度对比 o(n^2) vs nlog(n) 在执行和并发情况下原生函数优势明显</li>
+</ul>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016-05-26/PHP运行模式对比.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">PHP运行模式对比</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016-01-01/如何学习掌握一项新技术.html">
+        <span class="next-text nav-default">如何学习掌握一项新技术</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

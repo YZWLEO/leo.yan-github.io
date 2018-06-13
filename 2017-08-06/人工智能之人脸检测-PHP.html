@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="人工智能之人脸检测-PHP"/>
+
+
+
+
+  <meta name="keywords" content="PHP,ML," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2017-08-06/人工智能之人脸检测-PHP.html"/>
+
+
+<meta name="description" content="百度AI图形识别为我们提供丰富的应用场景 目前实际应用中在慢慢展开尝试：图形检测使用 人脸检测 检测图相中的人像数量，位置，生活照、证件照等类型 图像对比检测(图片相似度匹配) 人脸搜索 活体检测 挺牛逼的 刷脸卡等    以下以人脸搜索为例，对比检验认证+ 用于计算指定组内用户，与上传图像中人脸的相似度。 + 识别前提为您已经创建了一个人脸库。  + 典型应用场景：如人脸闸机，考勤签到，安防监控">
+<meta name="keywords" content="PHP,ML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工智能之人脸检测-PHP">
+<meta property="og:url" content="http://mlyan.top/2017-08-06/人工智能之人脸检测-PHP.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="百度AI图形识别为我们提供丰富的应用场景 目前实际应用中在慢慢展开尝试：图形检测使用 人脸检测 检测图相中的人像数量，位置，生活照、证件照等类型 图像对比检测(图片相似度匹配) 人脸搜索 活体检测 挺牛逼的 刷脸卡等    以下以人脸搜索为例，对比检验认证+ 用于计算指定组内用户，与上传图像中人脸的相似度。 + 识别前提为您已经创建了一个人脸库。  + 典型应用场景：如人脸闸机，考勤签到，安防监控">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/face/verfiy_face.png">
+<meta property="og:image" content="http://mlyan.top/images/face/face_api.png">
+<meta property="og:updated_time" content="2018-05-03T10:59:09.837Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="人工智能之人脸检测-PHP">
+<meta name="twitter:description" content="百度AI图形识别为我们提供丰富的应用场景 目前实际应用中在慢慢展开尝试：图形检测使用 人脸检测 检测图相中的人像数量，位置，生活照、证件照等类型 图像对比检测(图片相似度匹配) 人脸搜索 活体检测 挺牛逼的 刷脸卡等    以下以人脸搜索为例，对比检验认证+ 用于计算指定组内用户，与上传图像中人脸的相似度。 + 识别前提为您已经创建了一个人脸库。  + 典型应用场景：如人脸闸机，考勤签到，安防监控">
+<meta name="twitter:image" content="http://mlyan.top/images/face/verfiy_face.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 人工智能之人脸检测-PHP - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          人工智能之人脸检测-PHP
+        
+      </h1>
+
+      <time class="post-time">
+          Aug 06 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h5 id="百度AI图形识别为我们提供丰富的应用场景"><a href="#百度AI图形识别为我们提供丰富的应用场景" class="headerlink" title="百度AI图形识别为我们提供丰富的应用场景"></a>百度AI图形识别为我们提供丰富的应用场景</h5><ul>
+<li>目前实际应用中在慢慢展开尝试：<h3 id="图形检测使用"><a href="#图形检测使用" class="headerlink" title="图形检测使用"></a>图形检测使用</h3><ul>
+<li>人脸检测 检测图相中的人像数量，位置，生活照、证件照等类型</li>
+<li>图像对比检测(图片相似度匹配)</li>
+<li>人脸搜索</li>
+<li>活体检测 挺牛逼的</li>
+<li>刷脸卡等</li>
+</ul>
+</li>
+</ul>
+<h4 id="以下以人脸搜索为例，对比检验认证"><a href="#以下以人脸搜索为例，对比检验认证" class="headerlink" title="以下以人脸搜索为例，对比检验认证"></a>以下以人脸搜索为例，对比检验认证</h4><pre><code>+ 用于计算指定组内用户，与上传图像中人脸的相似度。
++ 识别前提为您已经创建了一个人脸库。
+
++ 典型应用场景：如人脸闸机，考勤签到，安防监控等。
+</code></pre><p><img src="/images/face/verfiy_face.png" alt="image"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/***</span></span><br><span class="line"><span class="comment"> * 人脸 图像识别测</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">"./AipFace.php"</span>);</span><br><span class="line"><span class="keyword">const</span> APP_ID = <span class="string">'101200'</span>;</span><br><span class="line"><span class="keyword">const</span> APP_KEY = <span class="string">'sfkkQFXrzMUdt29aqy24utN'</span>;</span><br><span class="line"><span class="keyword">const</span> APP_SECRET_KEY = <span class="string">'your key'</span>;</span><br><span class="line">$aipFace = <span class="keyword">new</span> AipFace(APP_ID,APP_KEY,APP_SECRET_KEY);</span><br><span class="line"></span><br><span class="line"><span class="comment">//$image = file_get_contents('wei.jpg');</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"&lt;pre&gt;"</span>;</span><br><span class="line"><span class="comment">//人脸检测</span></span><br><span class="line"><span class="comment">//$info = $aipFace-&gt;detect($image,['max_face_num'=&gt;1,'face_fields'=&gt;'age']);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//var_dump($info);die;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注册人脸用户 添加用户分组(默认)</span></span><br><span class="line">$meinv =  file_get_contents(<span class="string">'meinv.jpg'</span>);</span><br><span class="line">$meinv1 =  file_get_contents(<span class="string">'m1.jpg'</span>);</span><br><span class="line">$meinv2 =  file_get_contents(<span class="string">'m2.jpg'</span>);</span><br><span class="line">$meinv3 =  file_get_contents(<span class="string">'m3.jpg'</span>);</span><br><span class="line"></span><br><span class="line">$options[<span class="string">'action_type'</span>] = <span class="string">'append'</span>;</span><br><span class="line"><span class="comment">//$rs = $aipFace-&gt;addUser("user_meinv","美女_爬虫0","group_wei",$meinv,$options);</span></span><br><span class="line"><span class="comment">//print_r($rs);</span></span><br><span class="line"><span class="comment">//$rs = $aipFace-&gt;addUser("user_meinv1","美女_爬虫1","group_wei",$meinv1,$options);</span></span><br><span class="line"><span class="comment">//print_r($rs);</span></span><br><span class="line"><span class="comment">//$rs = $aipFace-&gt;addUser("user_meinv2","美女_爬虫2","group_wei",$meinv2,$options);</span></span><br><span class="line"><span class="comment">//print_r($rs);</span></span><br><span class="line"><span class="comment">//$rs = $aipFace-&gt;addUser("user_meinv3","美女_爬虫3","group_wei",$meinv3,$options);die;</span></span><br><span class="line"><span class="comment">//print_r($rs);</span></span><br><span class="line">$huashao =  file_get_contents(<span class="string">'andy.png'</span>);</span><br><span class="line"><span class="comment">/*$rs = $aipFace-&gt;addUser("user_man","刘德华_刘天王","group_wei",$huashao,$options);</span></span><br><span class="line"><span class="comment">print_r($rs);</span></span><br><span class="line"><span class="comment">die;*/</span></span><br><span class="line"><span class="comment">//人脸识别  1:N  在给定的用户组 人脸库查找相似度匹配高的</span></span><br><span class="line">$image = file_get_contents(<span class="string">'wei.jpg'</span>);</span><br><span class="line"><span class="comment">/*$options = array();</span></span><br><span class="line"><span class="comment">$options["ext_fields"] = "faceliveness";</span></span><br><span class="line"><span class="comment">$options["user_top_num"] = 1;</span></span><br><span class="line"><span class="comment">$identify = $aipFace-&gt;identifyUser('group_wei',$huashao,$options);</span></span><br><span class="line"><span class="comment">print_r($identify);die;*/</span></span><br><span class="line"><span class="comment">// 刷脸认证加自己也为认证  1:N  基于用户UID的识别 固定数量的人脸 比如正面 侧面 局部 特写等 更聚集 范围更小</span></span><br><span class="line">$options = <span class="keyword">array</span>();</span><br><span class="line">$options[<span class="string">"top_num"</span>] = <span class="number">3</span>;</span><br><span class="line">$options[<span class="string">"ext_fields"</span>] = <span class="string">"faceliveness"</span>;</span><br><span class="line">$verify = $aipFace-&gt;verifyUser(<span class="string">'user_meinv'</span>,<span class="string">'group_wei'</span>,$meinv1,$options);</span><br><span class="line">print_r($verify);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/face/face_api.png" alt="image"></p>
+<p><a href="http://ai.baidu.com/tech/ocr" target="_blank" rel="noopener">参考链接-百度AI</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+			<a href="/tags/ML/">ML</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2017-11-15/Hadoop生态.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Hadoop生态体系</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017-08-06/人工智能之图形识别-PHP.html">
+        <span class="next-text nav-default">人工智能之文字识别-PHP</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="PHP运行模式对比"/>
+
+
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2016-05-26/PHP运行模式对比.html"/>
+
+
+<meta name="description" content="SAPI [Server Application Programming Interface 服务器端应用编程端口]123456789如果了解php体系结构，那么SAPI相信并不陌生,它是提供了和外部通信的一致接口，要实现这种通信就要去实现接口，而实现了这些接口的实现大概分为：    1. cgi    2. fast-cgi    3. cli    4. apache 动态dll库    5.">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP运行模式对比">
+<meta property="og:url" content="http://mlyan.top/2016-05-26/PHP运行模式对比.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="SAPI [Server Application Programming Interface 服务器端应用编程端口]123456789如果了解php体系结构，那么SAPI相信并不陌生,它是提供了和外部通信的一致接口，要实现这种通信就要去实现接口，而实现了这些接口的实现大概分为：    1. cgi    2. fast-cgi    3. cli    4. apache 动态dll库    5.">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/php-fpm-liucheng.png">
+<meta property="og:image" content="http://mlyan.top/images/php-fpm.png">
+<meta property="og:updated_time" content="2018-04-27T05:47:55.240Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP运行模式对比">
+<meta name="twitter:description" content="SAPI [Server Application Programming Interface 服务器端应用编程端口]123456789如果了解php体系结构，那么SAPI相信并不陌生,它是提供了和外部通信的一致接口，要实现这种通信就要去实现接口，而实现了这些接口的实现大概分为：    1. cgi    2. fast-cgi    3. cli    4. apache 动态dll库    5.">
+<meta name="twitter:image" content="http://mlyan.top/images/php-fpm-liucheng.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> PHP运行模式对比 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          PHP运行模式对比
+        
+      </h1>
+
+      <time class="post-time">
+          May 26 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="SAPI-Server-Application-Programming-Interface-服务器端应用编程端口"><a href="#SAPI-Server-Application-Programming-Interface-服务器端应用编程端口" class="headerlink" title="SAPI [Server Application Programming Interface 服务器端应用编程端口]"></a>SAPI [Server Application Programming Interface 服务器端应用编程端口]</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">如果了解php体系结构，那么SAPI相信并不陌生,</span><br><span class="line">它是提供了和外部通信的一致接口，</span><br><span class="line">要实现这种通信就要去实现接口，</span><br><span class="line">而实现了这些接口的实现大概分为：</span><br><span class="line">    1. cgi</span><br><span class="line">    2. fast-cgi</span><br><span class="line">    3. cli</span><br><span class="line">    4. apache 动态dll库</span><br><span class="line">    5. isapi</span><br></pre></td></tr></table></figure>
+<p><img src="/images/php-fpm-liucheng.png" alt="image" title="PHP-FPM执行流程"></p>
+<h4 id="1-CGI-通用网关接口-Common-Gateway-Interface"><a href="#1-CGI-通用网关接口-Common-Gateway-Interface" class="headerlink" title="1. CGI  [ 通用网关接口 / Common Gateway Interface ]"></a>1. CGI  [ 通用网关接口 / Common Gateway Interface ]</h4><ul>
+<li><p>理解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cgi 只是个抽象的协议，与进程与语言毛关系</span><br><span class="line"></span><br><span class="line">php的解析器php-cgi是一个具体的cgi程序，本身只做解析请求和返回结果，不参与php进程管理，比如每次都会解析加载php.ini文件和初始化执行环境</span><br><span class="line"></span><br><span class="line">php-cgi 是php自带的fastcgi管理器</span><br><span class="line"></span><br><span class="line">每次更新php.ini文件 需要重启php-cgi</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Fork -And- Execute 模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">当面对请求数量增加是，大量资源会被占用，</span><br><span class="line">因为每个请求对应一个cgi的子进程，每次都会解析加载文件,</span><br><span class="line">磁盘io,内存/cpu负载都会非常高,</span><br><span class="line">所以执行效率低</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-FastCGI-常驻型CGI-Long-Live-CGI"><a href="#2-FastCGI-常驻型CGI-Long-Live-CGI" class="headerlink" title="2. FastCGI [ 常驻型CGI / Long-Live CGI ]"></a>2. FastCGI [ 常驻型CGI / Long-Live CGI ]</h4><ul>
+<li>理解<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">    fastcgi 是个抽象的协议，与语言无关，可进一步理解为可伸缩的cgi开放扩展，是用来提高cgi性能的</span><br><span class="line"></span><br><span class="line">    php-fpm实现了fastcgi协议，参与维护管理进程池</span><br><span class="line">    </span><br><span class="line">    php-fpm管理的对象是php-cgi，是php的fastcgi进程管理器</span><br><span class="line">    </span><br><span class="line">    php-fpm控制的是php-cgi的fastcgi进程</span><br><span class="line"></span><br><span class="line">    php-fpm前身是php源代码的补丁，从5.3.2或更新版本中已经正式加入php源码，可以直接使用</span><br><span class="line">    </span><br><span class="line">    另外，php-fpm支持修改php.ini文件的平滑启动，新产生的work用新的配置，已经存在的old work 处理完就退休</span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">    常驻型cgi,所以是cgi的升级版，之所以fast：</span><br><span class="line">    </span><br><span class="line">它启动后以守护进程的方式后台运行，不会每次请求都fork，并且是c/s架构设计，把http服务和脚本解析服务（n&gt;1个守护脚本解析进程）分开</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/images/php-fpm.png" alt="image" title="PHP-FPM主要配置参数"></p>
+<h5 id="3-CLI-命令行运行-Command-Line-Interface"><a href="#3-CLI-命令行运行-Command-Line-Interface" class="headerlink" title="3. CLI [ 命令行运行 / Command Line Interface ]"></a>3. CLI [ 命令行运行 / Command Line Interface ]</h5><blockquote>
+<p><a href="http://php.net/manual/zh/features.commandline.php" target="_blank" rel="noopener">参考链接</a></p>
+</blockquote>
+<ul>
+<li>理解</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">不同于web服务运行环境，这是一种命令行模式</span><br><span class="line"></span><br><span class="line">不仅可用作前台网页程序嵌套还能执行后端脚本应用</span><br><span class="line"></span><br><span class="line">php cli模式支持使用多进程模式，常驻进程方式维护主进程</span><br></pre></td></tr></table></figure>
+<h4 id="4-模块模式-Apache等Web服务器运行的模式-mod-php5"><a href="#4-模块模式-Apache等Web服务器运行的模式-mod-php5" class="headerlink" title="4. 模块模式 [ Apache等Web服务器运行的模式 mod_php5 ]"></a>4. 模块模式 [ Apache等Web服务器运行的模式 mod_php5 ]</h4><blockquote>
+<p><a href="http://modphp.hyurl.com/version" target="_blank" rel="noopener">参考链接</a></p>
+</blockquote>
+<ul>
+<li>理解<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">模块模式 </span><br><span class="line"></span><br><span class="line">mod_php 作用是接收服务器传过来的php文件请求,处理请求并返回结果给服务器</span><br><span class="line"></span><br><span class="line">服务器（apache）可以动态的加载扩展引用 前提把拓展模块编译成动态链接库</span><br><span class="line"></span><br><span class="line">eg: LoadModule php5_module modules/mod_php5.so</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="5-ISAPI模式"><a href="#5-ISAPI模式" class="headerlink" title="5. ISAPI模式"></a>5. ISAPI模式</h4><ul>
+<li>理解<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ISAPI（Internet Server Application Program Interface）是微软提供的一套面向Internet服务的API接口，</span><br><span class="line">一个ISAPI的DLL，可以在被用户请求激活后长驻内存，</span><br><span class="line">等待用户的另一个请求，还可以在一个DLL里设置多个用户请求处理函数，</span><br><span class="line">ISAPI的DLL应用程序和WWW服务器处于同一个进程中，</span><br><span class="line">由于win系的不兼容性，只能运行于windows环境,</span><br><span class="line">此外常驻进程模型使得处理请求性能高于cgi</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p><a href="https://github.com/helingfeng/php-src" target="_blank" rel="noopener">PHP源码</a></p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016-08-21/Google 字体国内提速方案.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Google Font Style 国内访问加速</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016-05-25/PHP性能优化.html">
+        <span class="next-text nav-default">PHP性能优化</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

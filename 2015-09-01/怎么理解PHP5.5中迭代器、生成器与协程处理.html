@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="怎么理解PHP5.5中迭代器与协程处理"/>
+
+
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2015-09-01/怎么理解PHP5.5中迭代器、生成器与协程处理.html"/>
+
+
+<meta name="description" content="怎么理解PHP5.5yield特性 迭代器123456789//可在内部迭代自己的外部迭代器或类的接口。Iterator extends Traversable &amp;#123;/* 方法 */abstract public mixed current ( void )//返回当前元素abstract public scalar key ( void )//返回当前元素的键值 abstract pub">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎么理解PHP5.5中迭代器与协程处理">
+<meta property="og:url" content="http://mlyan.top/2015-09-01/怎么理解PHP5.5中迭代器、生成器与协程处理.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="怎么理解PHP5.5yield特性 迭代器123456789//可在内部迭代自己的外部迭代器或类的接口。Iterator extends Traversable &amp;#123;/* 方法 */abstract public mixed current ( void )//返回当前元素abstract public scalar key ( void )//返回当前元素的键值 abstract pub">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/phpxiecheng.png">
+<meta property="og:updated_time" content="2018-05-08T12:05:27.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="怎么理解PHP5.5中迭代器与协程处理">
+<meta name="twitter:description" content="怎么理解PHP5.5yield特性 迭代器123456789//可在内部迭代自己的外部迭代器或类的接口。Iterator extends Traversable &amp;#123;/* 方法 */abstract public mixed current ( void )//返回当前元素abstract public scalar key ( void )//返回当前元素的键值 abstract pub">
+<meta name="twitter:image" content="http://mlyan.top/images/phpxiecheng.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 怎么理解PHP5.5中迭代器与协程处理 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          怎么理解PHP5.5中迭代器与协程处理
+        
+      </h1>
+
+      <time class="post-time">
+          Sep 01 2015
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="怎么理解PHP5-5"><a href="#怎么理解PHP5-5" class="headerlink" title="怎么理解PHP5.5"></a>怎么理解PHP5.5</h2><p><a href="http://php.net/manual/zh/language.generators.overview.php" target="_blank" rel="noopener">yield特性</a></p>
+<h4 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可在内部迭代自己的外部迭代器或类的接口。</span></span><br><span class="line">Iterator extends Traversable &#123;</span><br><span class="line"><span class="comment">/* 方法 */</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">public</span> mixed current ( void )<span class="comment">//返回当前元素</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">public</span> scalar key ( void )<span class="comment">//返回当前元素的键值 </span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">public</span> void next ( void )<span class="comment">//向前移动到下一个元素</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">public</span> void rewind ( void )<span class="comment">//返回到迭代器的第一个元素 重置指针</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">public</span> bool valid ( void )<span class="comment">//检测当前元素有效性</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://php.net/manual/zh/spl.iterators.php" target="_blank" rel="noopener">//php 内置的迭代器</a></p>
+<h4 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Generator implements Iterator &#123;</span><br><span class="line">    <span class="keyword">public</span> mixed current(void)</span><br><span class="line">    <span class="keyword">public</span> mixed key(void)</span><br><span class="line">    <span class="keyword">public</span> void next(void)</span><br><span class="line">    <span class="keyword">public</span> void rewind(void)</span><br><span class="line">    <span class="comment">// 向生成器传入一个值</span></span><br><span class="line">    <span class="keyword">public</span> mixed send(mixed $value)</span><br><span class="line">    <span class="keyword">public</span> void <span class="keyword">throw</span>(<span class="keyword">Exception</span> $exception)</span><br><span class="line">    <span class="keyword">public</span> bool valid(void)</span><br><span class="line">    <span class="comment">// 序列化回调 </span></span><br><span class="line">    <span class="keyword">public</span> void __wakeup(void)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="白话解释"><a href="#白话解释" class="headerlink" title="白话解释"></a>白话解释</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 生成器概念是php5.5以后引入的概念，是php5创新引入的一个新特性，但不是php语言特有的 像python也有迭代生成器的概念</span><br><span class="line">2. 没有生成器以前要实现相似功能必须定义类实现Iterator接口，并实现其抽象方法 (稍微麻烦)</span><br><span class="line">3. 引入生成器概念，使之上面的实现方式更简单，复杂性大大降低，并且可在foreach 代码块使用</span><br><span class="line">4. php的操作核心是数组，如果数组过大则性能消耗或者内存占用就会很大甚至造成内存溢出</span><br><span class="line">5. 生成器的语法 依赖 yield 关键字</span><br><span class="line">6. 生成器函数实际上也是隐式的实现Iterator接口</span><br><span class="line">7. 一个生成器不可以返回值： 这样做会产生一个编译错误。然而return空是一个有效的语法并且它将会终止生成器继续执行。</span><br></pre></td></tr></table></figure>
+<h6 id="Demo-下面是模拟两个数组函数的和-opcode-信息"><a href="#Demo-下面是模拟两个数组函数的和-opcode-信息" class="headerlink" title="Demo 下面是模拟两个数组函数的和 opcode 信息"></a>Demo 下面是模拟两个数组函数的和 opcode 信息</h6><ul>
+<li>普通函数在调用时候即执行     即 先灌满分配再遍历</li>
+<li>迭代器函数在调用时候并没有执行，而是生成一个可迭代的生成器对象（有点绕），是在遍历时候使用迭代对象时候才执行调用 即 所用即所得</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * User: wei</span></span><br><span class="line"><span class="comment"> * Email:leo.yzw<span class="doctag">@foxmail</span>.com</span></span><br><span class="line"><span class="comment"> * Time: 14:45</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">normal_array</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> range(<span class="number">1</span>,<span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$nor = normal_array();</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($nor <span class="keyword">as</span> $v)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"$v \t"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment">php -dvld.active=1 -dvld.execute=1 create_array.php</span></span><br><span class="line"><span class="comment">Finding entry points</span></span><br><span class="line"><span class="comment">Branch analysis from position: 0</span></span><br><span class="line"><span class="comment">Jump found. (Code = 77) Position 1 = 4, Position 2 = 11</span></span><br><span class="line"><span class="comment">Branch analysis from position: 4</span></span><br><span class="line"><span class="comment">Jump found. (Code = 78) Position 1 = 5, Position 2 = 11</span></span><br><span class="line"><span class="comment">Branch analysis from position: 5</span></span><br><span class="line"><span class="comment">Jump found. (Code = 42) Position 1 = 4</span></span><br><span class="line"><span class="comment">Branch analysis from position: 4</span></span><br><span class="line"><span class="comment">Branch analysis from position: 11</span></span><br><span class="line"><span class="comment">Jump found. (Code = 62) Position 1 = -2</span></span><br><span class="line"><span class="comment">Branch analysis from position: 11</span></span><br><span class="line"><span class="comment">filename:  create_array.php</span></span><br><span class="line"><span class="comment">function name:  (null)</span></span><br><span class="line"><span class="comment">number of ops:  13</span></span><br><span class="line"><span class="comment">compiled vars:  !0 = $nor, !1 = $v</span></span><br><span class="line"><span class="comment">line     #* E I O op                           fetch          ext  return  opera</span></span><br><span class="line"><span class="comment">nds</span></span><br><span class="line"><span class="comment">--------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-----</span></span><br><span class="line"><span class="comment">   9     0  E &gt;   NOP</span></span><br><span class="line"><span class="comment">  13     1        DO_FCALL                                      0  $0      'norm</span></span><br><span class="line"><span class="comment">al_array'</span></span><br><span class="line"><span class="comment">         2        ASSIGN                                                   !0, $</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">  15     3      &gt; FE_RESET                                         $2      !0, -</span></span><br><span class="line"><span class="comment">&gt;11</span></span><br><span class="line"><span class="comment">         4    &gt; &gt; FE_FETCH                                         $3      $2, -</span></span><br><span class="line"><span class="comment">&gt;11</span></span><br><span class="line"><span class="comment">         5    &gt;   OP_DATA</span></span><br><span class="line"><span class="comment">         6        ASSIGN                                                   !1, $</span></span><br><span class="line"><span class="comment">3</span></span><br><span class="line"><span class="comment">  16     7        ADD_VAR                                          ~5      !1</span></span><br><span class="line"><span class="comment">         8        ADD_STRING                                       ~5      ~5, '</span></span><br><span class="line"><span class="comment">+%09'</span></span><br><span class="line"><span class="comment">         9        ECHO                                                     ~5</span></span><br><span class="line"><span class="comment">  17    10      &gt; JMP                                                      -&gt;4</span></span><br><span class="line"><span class="comment">        11    &gt;   SWITCH_FREE                                              $2</span></span><br><span class="line"><span class="comment">  31    12      &gt; RETURN                                                   1</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">branch: #  0; line:     9-   15; sop:     0; eop:     3; out1:   4; out2:  11</span></span><br><span class="line"><span class="comment">branch: #  4; line:    15-   15; sop:     4; eop:     4; out1:   5; out2:  11</span></span><br><span class="line"><span class="comment">branch: #  5; line:    15-   17; sop:     5; eop:    10; out1:   4</span></span><br><span class="line"><span class="comment">branch: # 11; line:    17-   31; sop:    11; eop:    12; out1:  -2</span></span><br><span class="line"><span class="comment">path #1: 0, 4, 5, 4, 11,</span></span><br><span class="line"><span class="comment">path #2: 0, 4, 11,</span></span><br><span class="line"><span class="comment">path #3: 0, 11,</span></span><br><span class="line"><span class="comment">Function normal_array:</span></span><br><span class="line"><span class="comment">Finding entry points</span></span><br><span class="line"><span class="comment">Branch analysis from position: 0</span></span><br><span class="line"><span class="comment">Jump found. (Code = 62) Position 1 = -2</span></span><br><span class="line"><span class="comment">filename:       create_array.php</span></span><br><span class="line"><span class="comment">function name:  normal_array</span></span><br><span class="line"><span class="comment">number of ops:  5</span></span><br><span class="line"><span class="comment">compiled vars:  none</span></span><br><span class="line"><span class="comment">line     #* E I O op                           fetch          ext  return  opera</span></span><br><span class="line"><span class="comment">nds</span></span><br><span class="line"><span class="comment">--------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-----</span></span><br><span class="line"><span class="comment">  10     0  E &gt;   SEND_VAL                                                 1</span></span><br><span class="line"><span class="comment">         1        SEND_VAL                                                 10</span></span><br><span class="line"><span class="comment">         2        DO_FCALL                                      2  $0      'rang</span></span><br><span class="line"><span class="comment">e'</span></span><br><span class="line"><span class="comment">         3      &gt; RETURN                                                   $0</span></span><br><span class="line"><span class="comment">  11     4*     &gt; RETURN                                                   null</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">branch: #  0; line:    10-   11; sop:     0; eop:     4</span></span><br><span class="line"><span class="comment">path #1: 0,</span></span><br><span class="line"><span class="comment">End of function normal_array</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">1       2       3       4       5       6       7       8       9       10</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * User: wei</span></span><br><span class="line"><span class="comment"> * Email:leo.yzw<span class="doctag">@foxmail</span>.com</span></span><br><span class="line"><span class="comment"> * Time: 14:45</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gen_array</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>($i=<span class="number">1</span>;$i&lt;=<span class="number">10</span>;$i++)&#123;</span><br><span class="line">        <span class="keyword">yield</span> $i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$gen = gen_array();</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($gen <span class="keyword">as</span> $u)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"$u \t"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">php -dvld.active=1 -dvld.execute=1 create_array2.php</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Finding entry points</span></span><br><span class="line"><span class="comment">Branch analysis from position: 0</span></span><br><span class="line"><span class="comment">Jump found. (Code = 77) Position 1 = 4, Position 2 = 11</span></span><br><span class="line"><span class="comment">Branch analysis from position: 4</span></span><br><span class="line"><span class="comment">Jump found. (Code = 78) Position 1 = 5, Position 2 = 11</span></span><br><span class="line"><span class="comment">Branch analysis from position: 5</span></span><br><span class="line"><span class="comment">Jump found. (Code = 42) Position 1 = 4</span></span><br><span class="line"><span class="comment">Branch analysis from position: 4</span></span><br><span class="line"><span class="comment">Branch analysis from position: 11</span></span><br><span class="line"><span class="comment">Jump found. (Code = 62) Position 1 = -2</span></span><br><span class="line"><span class="comment">Branch analysis from position: 11</span></span><br><span class="line"><span class="comment">filename:       create_array2.php</span></span><br><span class="line"><span class="comment">function name:  (null)</span></span><br><span class="line"><span class="comment">number of ops:  13</span></span><br><span class="line"><span class="comment">compiled vars:  !0 = $gen, !1 = $u</span></span><br><span class="line"><span class="comment">line     #* E I O op                           fetch          ext  return  opera</span></span><br><span class="line"><span class="comment">nds</span></span><br><span class="line"><span class="comment">--------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-----</span></span><br><span class="line"><span class="comment">8     0  E &gt;   NOP</span></span><br><span class="line"><span class="comment">13     1        DO_FCALL                                      0  $0      'gen_</span></span><br><span class="line"><span class="comment">array'</span></span><br><span class="line"><span class="comment">2        ASSIGN                                                   !0, $</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">15     3      &gt; FE_RESET                                         $2      !0, -</span></span><br><span class="line"><span class="comment">&gt;11</span></span><br><span class="line"><span class="comment">4    &gt; &gt; FE_FETCH                                         $3      $2, -</span></span><br><span class="line"><span class="comment">&gt;11</span></span><br><span class="line"><span class="comment">5    &gt;   OP_DATA</span></span><br><span class="line"><span class="comment">6        ASSIGN                                                   !1, $</span></span><br><span class="line"><span class="comment">3</span></span><br><span class="line"><span class="comment">16     7        ADD_VAR                                          ~5      !1</span></span><br><span class="line"><span class="comment">8        ADD_STRING                                       ~5      ~5, '</span></span><br><span class="line"><span class="comment">+%09'</span></span><br><span class="line"><span class="comment">9        ECHO                                                     ~5</span></span><br><span class="line"><span class="comment">17    10      &gt; JMP                                                      -&gt;4</span></span><br><span class="line"><span class="comment">11    &gt;   SWITCH_FREE                                              $2</span></span><br><span class="line"><span class="comment">20    12      &gt; RETURN                                                   1</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">branch: #  0; line:     8-   15; sop:     0; eop:     3; out1:   4; out2:  11</span></span><br><span class="line"><span class="comment">branch: #  4; line:    15-   15; sop:     4; eop:     4; out1:   5; out2:  11</span></span><br><span class="line"><span class="comment">branch: #  5; line:    15-   17; sop:     5; eop:    10; out1:   4</span></span><br><span class="line"><span class="comment">branch: # 11; line:    17-   20; sop:    11; eop:    12; out1:  -2</span></span><br><span class="line"><span class="comment">path #1: 0, 4, 5, 4, 11,</span></span><br><span class="line"><span class="comment">path #2: 0, 4, 11,</span></span><br><span class="line"><span class="comment">path #3: 0, 11,</span></span><br><span class="line"><span class="comment">Function gen_array:</span></span><br><span class="line"><span class="comment">Finding entry points</span></span><br><span class="line"><span class="comment">Branch analysis from position: 0</span></span><br><span class="line"><span class="comment">Jump found. (Code = 45) Position 1 = 8, Position 2 = 6</span></span><br><span class="line"><span class="comment">Branch analysis from position: 8</span></span><br><span class="line"><span class="comment">Jump found. (Code = 161) Position 1 = -2</span></span><br><span class="line"><span class="comment">Branch analysis from position: 6</span></span><br><span class="line"><span class="comment">Jump found. (Code = 42) Position 1 = 3</span></span><br><span class="line"><span class="comment">Branch analysis from position: 3</span></span><br><span class="line"><span class="comment">Jump found. (Code = 42) Position 1 = 1</span></span><br><span class="line"><span class="comment">Branch analysis from position: 1</span></span><br><span class="line"><span class="comment">filename:  create_array2.php</span></span><br><span class="line"><span class="comment">function name:  gen_array</span></span><br><span class="line"><span class="comment">number of ops:  9</span></span><br><span class="line"><span class="comment">compiled vars:  !0 = $i</span></span><br><span class="line"><span class="comment">line     #* E I O op                           fetch          ext  return  opera</span></span><br><span class="line"><span class="comment">nds</span></span><br><span class="line"><span class="comment">--------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">-----</span></span><br><span class="line"><span class="comment">9     0  E &gt;   ASSIGN                                                   !0, 1</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">1    &gt;   IS_SMALLER_OR_EQUAL                              ~1      !0, 1</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">2      &gt; JMPZNZ                                        6          ~1, -</span></span><br><span class="line"><span class="comment">&gt;8</span></span><br><span class="line"><span class="comment">3    &gt;   POST_INC                                         ~2      !0</span></span><br><span class="line"><span class="comment">4        FREE                                                     ~2</span></span><br><span class="line"><span class="comment">5      &gt; JMP                                                      -&gt;1</span></span><br><span class="line"><span class="comment">10     6    &gt;   YIELD                                                    !0</span></span><br><span class="line"><span class="comment">11     7      &gt; JMP                                                      -&gt;3</span></span><br><span class="line"><span class="comment">12     8    &gt; &gt; GENERATOR_RETURN</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">branch: #  0; line:     9-    9; sop:     0; eop:     0; out1:   1</span></span><br><span class="line"><span class="comment">branch: #  1; line:     9-    9; sop:     1; eop:     2; out1:   8; out2:   6</span></span><br><span class="line"><span class="comment">branch: #  3; line:     9-    9; sop:     3; eop:     5; out1:   1</span></span><br><span class="line"><span class="comment">branch: #  6; line:    10-   11; sop:     6; eop:     7; out1:   3</span></span><br><span class="line"><span class="comment">branch: #  8; line:    12-   12; sop:     8; eop:     8; out1:  -2</span></span><br><span class="line"><span class="comment">path #1: 0, 1, 8,</span></span><br><span class="line"><span class="comment">path #2: 0, 1, 6, 3, 1, 8,</span></span><br><span class="line"><span class="comment">End of function gen_array</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">1       2       3       4       5       6       7       8       9       10</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<h4 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">协程的支持是在迭代生成器的基础上,</span><br><span class="line">增加了可以回送数据给生成器的功能</span><br><span class="line">(调用者发送数据给被调用的生成器函数).</span><br><span class="line">这就把生成器到调用者的单向通信转变为两者之间的双向通信.</span><br><span class="line">传递数据的功能是通过迭代器的send()方法实现的</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Generator::send(mixed $value)<br>向生成器中传入一个值，并且当做yield表达式的结果，然后继续执行生成器。<br>如果当这个方法被调用时，生成器不在 yield 表达式，那么在传入值之前，它会先运行到第一个 yield 表达式。</p>
+</blockquote>
+<p><img src="/images/phpxiecheng.png" alt="image"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $a = (<span class="keyword">yield</span> <span class="number">111</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'test()-&gt;$a:'</span>.$a.PHP_EOL;</span><br><span class="line">    $b = (<span class="keyword">yield</span> <span class="number">222</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'test()-&gt;$b:'</span>.$b.PHP_EOL;</span><br><span class="line">&#125;</span><br><span class="line">$gen = test();</span><br><span class="line">var_dump($gen);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"第一次:#"</span>.PHP_EOL;</span><br><span class="line">var_dump($gen-&gt;current());</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"第二次:#"</span>.PHP_EOL;</span><br><span class="line">var_dump($gen-&gt;send(<span class="number">333</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"第三次:#"</span>.PHP_EOL;</span><br><span class="line">var_dump($gen-&gt;next());</span><br><span class="line"></span><br><span class="line"><span class="comment">/***  output </span></span><br><span class="line"><span class="comment">$ php diedai.php</span></span><br><span class="line"><span class="comment">object(Generator)#1 (0) &#123;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">第一次:#</span></span><br><span class="line"><span class="comment">int(111)</span></span><br><span class="line"><span class="comment">第二次:#</span></span><br><span class="line"><span class="comment">test()-&gt;$a:333</span></span><br><span class="line"><span class="comment">int(222)</span></span><br><span class="line"><span class="comment">第三次:#</span></span><br><span class="line"><span class="comment">test()-&gt;$b:</span></span><br><span class="line"><span class="comment">NULL</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a href="http://php.net/manual/zh/language.generators.overview.php" target="_blank" rel="noopener">参考文档#php.net</a></p>
+</blockquote>
+<blockquote>
+<p><a href="http://www.laruence.com/2015/05/28/3038.html" target="_blank" rel="noopener">参考文档#PHP中使用协程实现多任务调度</a></p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2015-10-06/二维码登录原理理解.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">二维码登录原理理解</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2015-08-20/JavaEE相关.html">
+        <span class="next-text nav-default">JavaEE相关 学习路线</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

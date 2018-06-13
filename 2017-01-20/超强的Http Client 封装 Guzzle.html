@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="超强的Http client 封装 Guzzle"/>
+
+
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2017-01-20/超强的Http Client 封装 Guzzle.html"/>
+
+
+<meta name="description" content="GuzzleGuzzle是一个PHP的HTTP客户端，用来轻而易举地发送请求，并集成到我们的WEB服务上。  接口简单：构建查询语句、POST请求、分流上传下载大文件、使用HTTP cookies、上传JSON数据等等。 发送同步或异步的请求均使用相同的接口。 使用PSR-7接口来请求、响应、分流，允许你使用其他兼容的PSR-7类库与Guzzle共同开发。 抽象了底层的HTTP传输，允许你改变环境">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="超强的Http client 封装 Guzzle">
+<meta property="og:url" content="http://mlyan.top/2017-01-20/超强的Http Client 封装 Guzzle.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="GuzzleGuzzle是一个PHP的HTTP客户端，用来轻而易举地发送请求，并集成到我们的WEB服务上。  接口简单：构建查询语句、POST请求、分流上传下载大文件、使用HTTP cookies、上传JSON数据等等。 发送同步或异步的请求均使用相同的接口。 使用PSR-7接口来请求、响应、分流，允许你使用其他兼容的PSR-7类库与Guzzle共同开发。 抽象了底层的HTTP传输，允许你改变环境">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-09T07:29:49.587Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="超强的Http client 封装 Guzzle">
+<meta name="twitter:description" content="GuzzleGuzzle是一个PHP的HTTP客户端，用来轻而易举地发送请求，并集成到我们的WEB服务上。  接口简单：构建查询语句、POST请求、分流上传下载大文件、使用HTTP cookies、上传JSON数据等等。 发送同步或异步的请求均使用相同的接口。 使用PSR-7接口来请求、响应、分流，允许你使用其他兼容的PSR-7类库与Guzzle共同开发。 抽象了底层的HTTP传输，允许你改变环境">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 超强的Http client 封装 Guzzle - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          超强的Http client 封装 Guzzle
+        
+      </h1>
+
+      <time class="post-time">
+          Jan 20 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="Guzzle"><a href="#Guzzle" class="headerlink" title="Guzzle"></a>Guzzle</h4><p>Guzzle是一个PHP的HTTP客户端，用来轻而易举地发送请求，并集成到我们的WEB服务上。</p>
+<ul>
+<li>接口简单：构建查询语句、POST请求、分流上传下载大文件、使用HTTP cookies、上传JSON数据等等。</li>
+<li>发送同步或异步的请求均使用相同的接口。</li>
+<li>使用PSR-7接口来请求、响应、分流，允许你使用其他兼容的PSR-7类库与Guzzle共同开发。</li>
+<li>抽象了底层的HTTP传输，允许你改变环境以及其他的代码，如：对cURL与PHP的流或socket并非重度依赖，非阻塞事件循环。</li>
+<li>中间件系统允许你创建构成客户端行为。</li>
+</ul>
+<blockquote>
+<p><a href="http://docs.guzzlephp.org/en/stable/" target="_blank" rel="noopener">参考链接#Guzzle</a></p>
+</blockquote>
+<blockquote>
+<p><a href="http://guzzle-cn.readthedocs.io/zh_CN/latest/" target="_blank" rel="noopener">参考链接#Guzzle中文文档</a></p>
+</blockquote>
+<ul>
+<li>堪比python 中的requests lib </li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">/*</span></span><br><span class="line"><span class="comment">   系统间调用或者异构系统间通信通常都会模拟http client 请求，</span></span><br><span class="line"><span class="comment">   比如自己封装的curl方法 或者 file_get_contents之类，</span></span><br><span class="line"><span class="comment">   但是心仪的总让人念念不忘,</span></span><br><span class="line"><span class="comment">   强烈推荐 php客户端lib Guzzle</span></span><br><span class="line"><span class="comment">   </span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 解密</span></span><br><span class="line">   <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">extendDecrypt</span><span class="params">($encryptedText, $key)</span> </span>&#123;</span><br><span class="line">       $cryptText = base64_decode($encryptedText);</span><br><span class="line">       $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);</span><br><span class="line">       $iv = mcrypt_create_iv($ivSize, MCRYPT_RAND);</span><br><span class="line">       $decryptText = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $cryptText, MCRYPT_MODE_ECB, $iv);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> trim($decryptText);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//可逆加密</span></span><br><span class="line">   <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">extendEncrypt</span><span class="params">($plainText, $key)</span> </span>&#123;</span><br><span class="line">       $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);</span><br><span class="line">       $iv = mcrypt_create_iv($ivSize, MCRYPT_RAND);</span><br><span class="line">       $encryptText = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $plainText, MCRYPT_MODE_ECB, $iv);</span><br><span class="line">       <span class="keyword">return</span> trim(base64_encode($encryptText));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getCurl</span><span class="params">($url, $vars = array<span class="params">()</span>, $method = <span class="string">'post'</span>, $header = array<span class="params">()</span>, $referer = <span class="string">''</span>, $timeout = <span class="number">10</span>)</span> </span>&#123;</span><br><span class="line">       <span class="comment">/*$header[] = 'Host:' . @$_SERVER['HTTP_HOST'];</span></span><br><span class="line"><span class="comment">       $header['CLIENT-IP'] = @$_SERVER['REMOTE_ADDR'];</span></span><br><span class="line"><span class="comment">       $headers['X-FORWARDED-FOR'] = self::getClientIp();*/</span></span><br><span class="line">       $method = strtolower($method);</span><br><span class="line">       <span class="keyword">if</span> ($method == <span class="string">'get'</span> &amp;&amp; !<span class="keyword">empty</span>($vars)) &#123;</span><br><span class="line">           <span class="keyword">if</span> (strpos($url, <span class="string">'?'</span>) === <span class="keyword">false</span>)</span><br><span class="line">               $url = $url . <span class="string">'?'</span> . http_build_query($vars);</span><br><span class="line">           <span class="keyword">else</span></span><br><span class="line">               $url = $url . <span class="string">'&amp;'</span> . http_build_query($vars);</span><br><span class="line">       &#125;</span><br><span class="line">       $ch = curl_init();</span><br><span class="line">       curl_setopt($ch, CURLOPT_URL, $url);</span><br><span class="line">       curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, <span class="number">10</span>);</span><br><span class="line">       curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);<span class="comment">//允许执行最长秒数</span></span><br><span class="line">       curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, <span class="number">60</span>);<span class="comment">//dns cache</span></span><br><span class="line">       curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <span class="number">1</span>);</span><br><span class="line">       curl_setopt($ch, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line">       <span class="comment">//curl_setopt($ch, CURLOPT_REFERER, $referer);</span></span><br><span class="line">       <span class="comment">//curl_setopt($ch, CURLOPT_HEADER, 0);</span></span><br><span class="line">       <span class="comment">//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);</span></span><br><span class="line">       <span class="keyword">if</span> ($method == <span class="string">'post'</span>) &#123;</span><br><span class="line">           curl_setopt($ch, CURLOPT_POST, <span class="number">1</span>);</span><br><span class="line">           curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);</span><br><span class="line">       &#125;</span><br><span class="line">       $result = curl_exec($ch);</span><br><span class="line">       <span class="keyword">if</span> (!curl_errno($ch)) &#123;</span><br><span class="line">           curl_close($ch);</span><br><span class="line">           $result = trim($result);</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           $error = curl_errno($ch);</span><br><span class="line">           curl_close($ch);</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> \<span class="keyword">Exception</span>(<span class="string">"curl出错，错误码:$error"</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> $result;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2017-08-06/人工智能之图形识别-PHP.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">人工智能之文字识别-PHP</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016-11-18/云计算.html">
+        <span class="next-text nav-default">什么是云计算</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

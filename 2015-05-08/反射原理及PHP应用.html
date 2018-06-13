@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="反射原理及PHP应用"/>
+
+
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2015-05-08/反射原理及PHP应用.html"/>
+
+
+<meta name="description" content="反射 反射主要是指程序可以访问、检测和修改它本身状态或行为的一种能力 计算科学领域中，反射是一类应用，它们能够自描述和自控制（内省） 反射不是php独有的，php5新引入，同大多数面向对象语言一样如：java 实现动态绑定 、代理实现（一般是静态绑定 编译前 就能确定对象） 多态应用的高级实现 （底层框架比较常见 看源码） 反射在面向对象中一般从以下描述类：不同语言实现方式不同 (IOC 控制反转">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反射原理及PHP应用">
+<meta property="og:url" content="http://mlyan.top/2015-05-08/反射原理及PHP应用.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="反射 反射主要是指程序可以访问、检测和修改它本身状态或行为的一种能力 计算科学领域中，反射是一类应用，它们能够自描述和自控制（内省） 反射不是php独有的，php5新引入，同大多数面向对象语言一样如：java 实现动态绑定 、代理实现（一般是静态绑定 编译前 就能确定对象） 多态应用的高级实现 （底层框架比较常见 看源码） 反射在面向对象中一般从以下描述类：不同语言实现方式不同 (IOC 控制反转">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/reflector.png">
+<meta property="og:updated_time" content="2018-05-28T02:33:36.710Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="反射原理及PHP应用">
+<meta name="twitter:description" content="反射 反射主要是指程序可以访问、检测和修改它本身状态或行为的一种能力 计算科学领域中，反射是一类应用，它们能够自描述和自控制（内省） 反射不是php独有的，php5新引入，同大多数面向对象语言一样如：java 实现动态绑定 、代理实现（一般是静态绑定 编译前 就能确定对象） 多态应用的高级实现 （底层框架比较常见 看源码） 反射在面向对象中一般从以下描述类：不同语言实现方式不同 (IOC 控制反转">
+<meta name="twitter:image" content="http://mlyan.top/images/reflector.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 反射原理及PHP应用 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          反射原理及PHP应用
+        
+      </h1>
+
+      <time class="post-time">
+          May 08 2015
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h4><ul>
+<li>反射主要是指程序可以访问、检测和修改它本身状态或行为的一种能力</li>
+<li>计算科学领域中，反射是一类应用，它们能够自描述和自控制（内省）</li>
+<li>反射不是php独有的，php5新引入，同大多数面向对象语言一样如：java</li>
+<li>实现动态绑定 、代理实现（一般是静态绑定 编译前 就能确定对象）</li>
+<li>多态应用的高级实现 （底层框架比较常见 看源码）</li>
+<li>反射在面向对象中一般从以下描述类：不同语言实现方式不同 (IOC 控制反转 DI  依赖注入 实现的核心) </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class 类对象</span><br><span class="line">construct 构成函数</span><br><span class="line">property 属性字段</span><br><span class="line">method   方法</span><br><span class="line">power    访问控制 私有 公共 保护</span><br><span class="line">doc      注解 注释文档</span><br></pre></td></tr></table></figure>
+<h4 id="PHP-中的反射"><a href="#PHP-中的反射" class="headerlink" title="PHP 中的反射"></a>PHP 中的反射</h4><blockquote>
+<p>PHP 5 具有完整的反射 API，添加了对类、接口、函数、方法和扩展进行反向工程的能力。 此外，反射 API 提供了方法来取出函数、类和方法中的文档注释。</p>
+</blockquote>
+<blockquote>
+<p><a href="http://php.net/manual/zh/class.reflectionclass.php" target="_blank" rel="noopener">参考链接#PHP.NET</a></p>
+</blockquote>
+<h4 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h4><p><img src="/images/reflector.png" alt="image"></p>
+<h5 id="Reflection-Api-gt-php5"><a href="#Reflection-Api-gt-php5" class="headerlink" title="Reflection Api(&gt;=php5)"></a>Reflection Api(&gt;=php5)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ReflectionClass</span><br><span class="line">ReflectionClassConstant</span><br><span class="line">ReflectionZendExtension</span><br><span class="line">ReflectionExtension</span><br><span class="line">ReflectionFunction</span><br><span class="line">ReflectionFunctionAbstract</span><br><span class="line">ReflectionMethod</span><br><span class="line">ReflectionObject</span><br><span class="line">ReflectionParameter</span><br><span class="line">ReflectionProperty</span><br><span class="line">ReflectionType</span><br><span class="line">ReflectionGenerator</span><br><span class="line">Reflector</span><br><span class="line">ReflectionException</span><br></pre></td></tr></table></figure>
+<h4 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h4><ul>
+<li>最常用的莫过于 ReflectionClass ReflectionObject 这两个  一个是描述class 一个是描述对象 且体系结果得知 后者继承前者实现 都实现 Reflector 接口 </li>
+<li>一般在服务框架中使用较多 ，配合设计模式 比如DI IOC 动态代理 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">A</span>;</span><br><span class="line"><span class="keyword">abstract</span>  <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">($a,$b,$c)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span>  <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $_name;</span><br><span class="line">    <span class="keyword">private</span> $_sex;</span><br><span class="line">    <span class="keyword">private</span> $_phone;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> $classNumber=<span class="string">"A100"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * User constructor.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $_name</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $_sex</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> $_phone</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($_name, $_sex, $_phone)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_name = $_name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_sex = $_sex;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_phone = $_phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;_name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> mixed $name</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setName</span><span class="params">($name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_name = $name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getSex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;_sex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> mixed $sex</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setSex</span><span class="params">($sex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_sex = $sex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getPhone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;_phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> mixed $phone</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setPhone</span><span class="params">($phone)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_phone = $phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">($somethin,$somemoney,$someelse)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> Implement eat() method.</span></span><br><span class="line">        <span class="keyword">return</span> $somethin.$somemoney.$someelse;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不依赖 反射</span></span><br><span class="line"><span class="comment"># print_r(get_object_vars(new User()));</span></span><br><span class="line"><span class="comment"># print_r(get_class_vars("A/User"));</span></span><br><span class="line"><span class="comment"># print_r(get_class_methods(get_class(new User())));die;</span></span><br><span class="line"></span><br><span class="line">$class = <span class="keyword">new</span> \ReflectionClass(<span class="string">'A\User'</span>);</span><br><span class="line"><span class="comment">//获取 类名</span></span><br><span class="line">print_r($class-&gt;name);<span class="comment">// A\User</span></span><br><span class="line"><span class="comment">//获取类方法</span></span><br><span class="line">print_r($class-&gt;getMethods());</span><br><span class="line"><span class="comment">//当前类完整路径</span></span><br><span class="line">print_r($class-&gt;getFileName());<span class="comment">//\fanshe\User.php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//包括继承的属性</span></span><br><span class="line"><span class="keyword">foreach</span> ($class-&gt;getDefaultProperties() <span class="keyword">as</span> $p)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $p.PHP_EOL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($class-&gt;getProperties() <span class="keyword">as</span> $p)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $p.PHP_EOL;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> $class-&gt;getNamespaceName();</span><br><span class="line"></span><br><span class="line">print_r($class-&gt;getInterfaces());</span><br><span class="line">print_r($class-&gt;getInterfaceNames());</span><br><span class="line">print_r($class-&gt;isAbstract());</span><br><span class="line">print_r($class-&gt;inNamespace());</span><br><span class="line"></span><br><span class="line">$user = $class-&gt;newInstance();</span><br><span class="line">$user-&gt;setSex(<span class="string">"man"</span>);</span><br><span class="line">var_dump($user);</span><br><span class="line"></span><br><span class="line">$p = $class-&gt;newInstanceArgs([<span class="string">'xiao'</span>,<span class="string">'mail'</span>,<span class="string">'188888888'</span>]);</span><br><span class="line"></span><br><span class="line">var_dump($p);</span><br><span class="line"></span><br><span class="line">$ref = <span class="keyword">new</span> \ReflectionObject($p);</span><br><span class="line">$props = $ref-&gt;getProperties();</span><br><span class="line"><span class="keyword">foreach</span> ($props <span class="keyword">as</span> $_p)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $_p-&gt;getName().PHP_EOL;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> str_repeat(<span class="string">'#'</span>,<span class="number">5</span>).PHP_EOL;</span><br><span class="line"><span class="keyword">foreach</span> ($ref-&gt;getMethods() <span class="keyword">as</span> $m)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $m-&gt;getName().PHP_EOL;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ref_class = <span class="keyword">new</span> \ReflectionClass(User::class);</span><br><span class="line"><span class="keyword">if</span>($ref_class-&gt;hasMethod(<span class="string">'__construct'</span>))&#123;</span><br><span class="line">    $construct = $ref_class-&gt;getMethod(<span class="string">'__construct'</span>);</span><br><span class="line">    <span class="comment">//var_dump($construct-&gt;getParameters());</span></span><br><span class="line">    $params = $construct-&gt;getParameters();</span><br><span class="line">    <span class="keyword">if</span>(count($params)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">foreach</span> ($params <span class="keyword">as</span> $key=&gt;$param)&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"key"</span>.$key;</span><br><span class="line">            print_r($param);</span><br><span class="line">            <span class="keyword">echo</span> PHP_EOL;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2015-08-05/PHP 体系结构及运行原理.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">PHP 体系结构及运行原理</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2015-02-28/PHP SPL之数据结构 (数组与隐射).html">
+        <span class="next-text nav-default">PHP SPL之数据结构 (数组与隐射)</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

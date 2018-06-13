@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="PHP SPL之数据结构 (数组与隐射)"/>
+
+
+
+
+  <meta name="keywords" content="PHP,数据结构," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2015-02-28/PHP SPL之数据结构 (数组与隐射).html"/>
+
+
+<meta name="description" content="参考链接#PHP.NET  HashTable 是一种数据结构 ，是哈希函数- &amp;lt;&amp;lt;PHP内核原理&amp;gt;&amp;gt; 摘 123456789101112哈希表通常提供查找(Search)，插入(Insert)，删除(Delete)等操作，这些操作在最坏的情况下和链表的性能一样为O(n)。不过通常并不会这么坏，合理设计的哈希算法能有效的避免这类情况，通常哈希表的这些操作时间复杂度为O(1">
+<meta name="keywords" content="PHP,数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP SPL之数据结构 (数组与隐射)">
+<meta property="og:url" content="http://mlyan.top/2015-02-28/PHP SPL之数据结构 (数组与隐射).html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="参考链接#PHP.NET  HashTable 是一种数据结构 ，是哈希函数- &amp;lt;&amp;lt;PHP内核原理&amp;gt;&amp;gt; 摘 123456789101112哈希表通常提供查找(Search)，插入(Insert)，删除(Delete)等操作，这些操作在最坏的情况下和链表的性能一样为O(n)。不过通常并不会这么坏，合理设计的哈希算法能有效的避免这类情况，通常哈希表的这些操作时间复杂度为O(1">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-18T08:47:31.274Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP SPL之数据结构 (数组与隐射)">
+<meta name="twitter:description" content="参考链接#PHP.NET  HashTable 是一种数据结构 ，是哈希函数- &amp;lt;&amp;lt;PHP内核原理&amp;gt;&amp;gt; 摘 123456789101112哈希表通常提供查找(Search)，插入(Insert)，删除(Delete)等操作，这些操作在最坏的情况下和链表的性能一样为O(n)。不过通常并不会这么坏，合理设计的哈希算法能有效的避免这类情况，通常哈希表的这些操作时间复杂度为O(1">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> PHP SPL之数据结构 (数组与隐射) - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          PHP SPL之数据结构 (数组与隐射)
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 28 2015
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <blockquote>
+<p><a href="http://php.net/manual/zh/spl.datastructures.php" target="_blank" rel="noopener">参考链接#PHP.NET</a></p>
+</blockquote>
+<h4 id="HashTable-是一种数据结构-，是哈希函数"><a href="#HashTable-是一种数据结构-，是哈希函数" class="headerlink" title="HashTable 是一种数据结构 ，是哈希函数"></a>HashTable 是一种数据结构 ，是哈希函数</h4><pre><code>- &lt;&lt;PHP内核原理&gt;&gt; 摘
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">哈希表通常提供查找(Search)，插入(Insert)，删除(Delete)等操作，</span><br><span class="line">这些操作在最坏的情况下和链表的性能一样为O(n)。</span><br><span class="line">不过通常并不会这么坏，</span><br><span class="line">合理设计的哈希算法能有效的避免这类情况，通常哈希表的这些操作时间复杂度为O(1)。</span><br><span class="line">这也是它被钟爱的原因。</span><br><span class="line"></span><br><span class="line">正是因为哈希表在使用上的便利性及效率上的表现，</span><br><span class="line">目前大部分动态语言的实现中都使用了哈希表  </span><br><span class="line"></span><br><span class="line">PHP内核中的哈希表是十分重要的数据结构，</span><br><span class="line">PHP的大部分的语言特性都是基于哈希表实现的，</span><br><span class="line">例如：变量的作用域、函数表、类的属性、方法等，Zend引擎内部的很多数据都是保存在哈希表中的。</span><br></pre></td></tr></table></figure>
+<pre><code> 1. 特定键值的映射的一种数据结构，键值的一一对应关系
+ 2. 键(key)：用于操作数据的标示，例如PHP数组中的索引，或者字符串键等等
+ 3. 槽(slot/bucket)：哈希表中用于保存数据的一个单元，也就是数据真正存放的容器
+ 4. 哈希函数(hash function)：将key映射(map)到数据应该存放的slot所在位置的函数。 
+ 5. 哈希冲突(hash collision)：哈希函数将两个不同的key映射到同一个索引的情况。目前解决hash冲突的方法主要有两种：链接法和开放寻址法 （hash 碰撞解决方案(移位或二次hash)  google吧 ）
+ 6. h(key) -&gt; index 这样理解 数组(键值可以是数字或其他字符甚至中文 hash可以节约空间)
+ 7. PHP中HashTable的哈希冲突解决方法就是链接法
+ 8. 链接法通过使用一个链表来保存slot值的方式来解决冲突，也就是当不同的key映射到一个槽中的时候使用链表来保存这些值。所以使用链接法是在最坏的情况下，也就是所有的key都映射到同一个槽中了，这样哈希表就退化成了一个链表，这样的话操作链表的时间复杂度则成了O(n)，这样哈希表的性能优势就没有了，所以选择一个合适的哈希函数是最为关键的
+ 9. 开放寻址法。使用开放寻址法是槽本身直接存放数据，在插入数据时如果key所映射到的索引已经有数据了，这说明发生了冲突，这是会寻找下一个槽，如果该槽也被占用了则继续寻找下一个槽，直到寻找到没有被占用的槽，在查找时也使用同样的策略来进行。
+    由于开放寻址法处理冲突的时候占用的是其他槽位的空间,这可能会导致后续的key在插入的时候更加容易出现哈希冲突，所以采用开放寻址法的哈希表的装载因子不能太高，否则容易出现性能下降
+
+10. Zend引擎中的链表是双链表，通过双链表的任意节点都能方便的对链表进行遍历。
+    Zend引擎的哈希表实现是哈希表和双链表的混合实现，这也是为了方便哈希表的遍历
+</code></pre><h4 id="SplFixedArray"><a href="#SplFixedArray" class="headerlink" title="SplFixedArray"></a>SplFixedArray</h4><blockquote>
+<p>数组是以连续方式存储数据的结构, 可通过索引进行访问。不要将它们与 php 数组混淆: php 数组实际上是按照有序的列表实现的</p>
+<ul>
+<li>区别</li>
+</ul>
+</blockquote>
+<p>The main differences between a SplFixedArray and a normal PHP array is that the SplFixedArray is of fixed length and allows only integers within the range as indexes. The advantage is that it allows a faster array implementation.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">SplFixedArray implements Iterator , ArrayAccess , Countable &#123;</span><br><span class="line"><span class="comment">/* 方法 */</span></span><br><span class="line"><span class="keyword">public</span> __construct ([ int $size = <span class="number">0</span> ] )</span><br><span class="line"><span class="keyword">public</span> int count ( void )</span><br><span class="line"><span class="keyword">public</span> mixed current ( void )</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> SplFixedArray fromArray ( <span class="keyword">array</span> $array [, bool $save_indexes = <span class="keyword">TRUE</span> ] )</span><br><span class="line"><span class="keyword">public</span> int getSize ( void )</span><br><span class="line"><span class="keyword">public</span> int key ( void )</span><br><span class="line"><span class="keyword">public</span> void next ( void )</span><br><span class="line"><span class="keyword">public</span> bool offsetExists ( int $index )</span><br><span class="line"><span class="keyword">public</span> mixed offsetGet ( int $index )</span><br><span class="line"><span class="keyword">public</span> void offsetSet ( int $index , mixed $newval )</span><br><span class="line"><span class="keyword">public</span> void offsetUnset ( int $index )</span><br><span class="line"><span class="keyword">public</span> void rewind ( void )</span><br><span class="line"><span class="keyword">public</span> bool setSize ( int $size )</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">array</span> toArray ( void )</span><br><span class="line"><span class="keyword">public</span> bool valid ( void )</span><br><span class="line"><span class="keyword">public</span> void __wakeup ( void )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="对比-Array-SplFixedArray"><a href="#对比-Array-SplFixedArray" class="headerlink" title="对比 Array SplFixedArray"></a>对比 Array SplFixedArray</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$a = <span class="keyword">array</span>();</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">50000</span>; $i++) &#123;</span><br><span class="line">    $a[$i] = $i;</span><br><span class="line">&#125;</span><br><span class="line">var_dump($a);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">php -dvld.active=1 -dvld.execute=0 spl_array3.php</span></span><br><span class="line"><span class="comment">Finding entry points</span></span><br><span class="line"><span class="comment">Branch analysis from position: 0</span></span><br><span class="line"><span class="comment">Jump found. (Code = 45) Position 1 = 15, Position 2 = 11</span></span><br><span class="line"><span class="comment">Branch analysis from position: 15</span></span><br><span class="line"><span class="comment">Jump found. (Code = 62) Position 1 = -2</span></span><br><span class="line"><span class="comment">Branch analysis from position: 11</span></span><br><span class="line"><span class="comment">Jump found. (Code = 42) Position 1 = 8</span></span><br><span class="line"><span class="comment">Branch analysis from position: 8</span></span><br><span class="line"><span class="comment">Jump found. (Code = 42) Position 1 = 5</span></span><br><span class="line"><span class="comment">Branch analysis from position: 5</span></span><br><span class="line"><span class="comment">filename:       \spl_array3.php</span></span><br><span class="line"><span class="comment">function name:  (null)</span></span><br><span class="line"><span class="comment">number of ops:  21</span></span><br><span class="line"><span class="comment">compiled vars:  !0 = $a, !1 = $i</span></span><br><span class="line"><span class="comment">line     #* E I O op                           fetch          ext  return  operands</span></span><br><span class="line"><span class="comment">-------------------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">11     0  E &gt;   EXT_STMT</span></span><br><span class="line"><span class="comment">1        INIT_ARRAY                                       ~0</span></span><br><span class="line"><span class="comment">2        ASSIGN                                                   !0, ~0</span></span><br><span class="line"><span class="comment">12     3        EXT_STMT</span></span><br><span class="line"><span class="comment">4        ASSIGN                                                   !1, 0</span></span><br><span class="line"><span class="comment">5    &gt;   IS_SMALLER                                       ~3      !1, 5</span></span><br><span class="line"><span class="comment">6        EXT_STMT</span></span><br><span class="line"><span class="comment">7      &gt; JMPZNZ                                       11          ~3, -&gt;15</span></span><br><span class="line"><span class="comment">8    &gt;   POST_INC                                         ~4      !1</span></span><br><span class="line"><span class="comment">9        FREE                                                     ~4</span></span><br><span class="line"><span class="comment">10      &gt; JMP                                                      -&gt;5</span></span><br><span class="line"><span class="comment">13    11    &gt;   EXT_STMT</span></span><br><span class="line"><span class="comment">12        ASSIGN_DIM                                               !0, !1</span></span><br><span class="line"><span class="comment">13        OP_DATA                                                  !1, $6</span></span><br><span class="line"><span class="comment">14    14      &gt; JMP                                                      -&gt;8</span></span><br><span class="line"><span class="comment">15    15    &gt;   EXT_STMT</span></span><br><span class="line"><span class="comment">16        EXT_FCALL_BEGIN</span></span><br><span class="line"><span class="comment">17        SEND_VAR                                                 !0</span></span><br><span class="line"><span class="comment">18        DO_FCALL                                      1          'var_dump'</span></span><br><span class="line"><span class="comment">19        EXT_FCALL_END</span></span><br><span class="line"><span class="comment">16    20      &gt; RETURN                                                   1</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">branch: #  0; line:    11-   12; sop:     0; eop:     4; out1:   5</span></span><br><span class="line"><span class="comment">branch: #  5; line:    12-   12; sop:     5; eop:     7; out1:  15; out2:  11</span></span><br><span class="line"><span class="comment">branch: #  8; line:    12-   12; sop:     8; eop:    10; out1:   5</span></span><br><span class="line"><span class="comment">branch: # 11; line:    13-   14; sop:    11; eop:    14; out1:   8</span></span><br><span class="line"><span class="comment">branch: # 15; line:    15-   16; sop:    15; eop:    20; out1:  -2</span></span><br><span class="line"><span class="comment">path #1: 0, 5, 15,</span></span><br><span class="line"><span class="comment">path #2: 0, 5, 11, 8, 5, 15,</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$spl_a = new SplFixedArray(50000);</span><br><span class="line">for ($i = 0; $i &lt; 50000; $i++) &#123;</span><br><span class="line">    $spl_a[$i] = $i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var_dump($spl_a);</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">php -dvld.active=1 -dvld.execute=0 spl_array4.php</span><br><span class="line">Finding entry points</span><br><span class="line">Branch analysis from position: 0</span><br><span class="line">Jump found. (Code = 45) Position 1 = 20, Position 2 = 16</span><br><span class="line">Branch analysis from position: 20</span><br><span class="line">Jump found. (Code = 62) Position 1 = -2</span><br><span class="line">Branch analysis from position: 16</span><br><span class="line">Jump found. (Code = 42) Position 1 = 13</span><br><span class="line">Branch analysis from position: 13</span><br><span class="line">Jump found. (Code = 42) Position 1 = 10</span><br><span class="line">Branch analysis from position: 10</span><br><span class="line">filename:       spl\spl_array4.php</span><br><span class="line">function name:  (null)</span><br><span class="line">number of ops:  26</span><br><span class="line">compiled vars:  !0 = $spl_a, !1 = $i</span><br><span class="line">line     #* E I O op                           fetch          ext  return  operands</span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line">11     0  E &gt;   EXT_STMT</span><br><span class="line">1        FETCH_CLASS                                   0  :0      &apos;SplFixedArray&apos;</span><br><span class="line">2        EXT_FCALL_BEGIN</span><br><span class="line">3        NEW                                              $1      :0</span><br><span class="line">4        SEND_VAL                                                 5</span><br><span class="line">5        DO_FCALL_BY_NAME                              1</span><br><span class="line">6        EXT_FCALL_END</span><br><span class="line">7        ASSIGN                                                   !0, $1</span><br><span class="line">12     8        EXT_STMT</span><br><span class="line">9        ASSIGN                                                   !1, 0</span><br><span class="line">10    &gt;   IS_SMALLER                                       ~5      !1, 5</span><br><span class="line">11        EXT_STMT</span><br><span class="line">12      &gt; JMPZNZ                                       16          ~5, -&gt;20</span><br><span class="line">13    &gt;   POST_INC                                         ~6      !1</span><br><span class="line">14        FREE                                                     ~6</span><br><span class="line">15      &gt; JMP                                                      -&gt;10</span><br><span class="line">13    16    &gt;   EXT_STMT</span><br><span class="line">17        ASSIGN_DIM                                               !0, !1</span><br><span class="line">18        OP_DATA                                                  !1, $8</span><br><span class="line">14    19      &gt; JMP                                                      -&gt;13</span><br><span class="line">16    20    &gt;   EXT_STMT</span><br><span class="line">21        EXT_FCALL_BEGIN</span><br><span class="line">22        SEND_VAR                                                 !0</span><br><span class="line">23        DO_FCALL                                      1          &apos;var_dump&apos;</span><br><span class="line">24        EXT_FCALL_END</span><br><span class="line">17    25      &gt; RETURN                                                   1</span><br><span class="line"></span><br><span class="line">branch: #  0; line:    11-   12; sop:     0; eop:     9; out1:  10</span><br><span class="line">branch: # 10; line:    12-   12; sop:    10; eop:    12; out1:  20; out2:  16</span><br><span class="line">branch: # 13; line:    12-   12; sop:    13; eop:    15; out1:  10</span><br><span class="line">branch: # 16; line:    13-   14; sop:    16; eop:    19; out1:  13</span><br><span class="line">branch: # 20; line:    16-   17; sop:    20; eop:    25; out1:  -2</span><br><span class="line">path #1: 0, 10, 20,</span><br><span class="line">path #2: 0, 10, 16, 13, 10, 20,</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
+<h4 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> 1. 刚开始在同一个文件测试，始终是array 然后测试值比较小 出乎意料  array 比 SplFixedArray 少  无论从生成的操作数和生成的中间代码的变量列表 说明 Array较快或者差不多</span><br><span class="line"> </span><br><span class="line"> 2. 调整参数之后 随着参数越来越大 ，SplFixedArray 比array 优势明显</span><br><span class="line"> </span><br><span class="line">生成的操作数 SplFixedArray  保持不变  Array 增加明显</span><br><span class="line">生成的中间代码的变量列表 SplFixedArray 保持不变 Array 增加明显</span><br><span class="line"></span><br><span class="line"> 3. 普通数组实现是链表加hashtable混合实现 在较小数是 完全退化为链表 hashtable 优势没有发挥出来,尽管这样在处理 小数量级时还是比SplFixedArray 有微弱优势  </span><br><span class="line"> </span><br><span class="line"> 4. 之所以说微弱 是因为 SplFixedArray 的键值只能是数字型 并且有固定size大小，相较于SplFixedArray 一次分配内存 和Array动态分配内存而言 肯定SplFixedArray 更有优势</span><br><span class="line"> </span><br><span class="line"> 5. 在大数量级时 SplFixedArray 处理比 Array 优势明显   (比array更高效  开篇已说明 见（区别）)</span><br></pre></td></tr></table></figure>
+<h4 id="SplObjectStorage"><a href="#SplObjectStorage" class="headerlink" title="SplObjectStorage"></a>SplObjectStorage</h4><blockquote>
+<p>映射是一个数据拥有键值对。PHP 数组可以被看作是从整数/字符串到值的映射。SPL 提供了从对象到数据的映射。此映射也可用作对象集</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">SplObjectStorage implements Countable , Iterator , Serializable , ArrayAccess &#123;</span><br><span class="line"><span class="comment">/* 方法 */</span></span><br><span class="line"><span class="keyword">public</span> void addAll ( SplObjectStorage $storage )</span><br><span class="line"><span class="keyword">public</span> void attach ( object $object [, mixed $data = <span class="keyword">NULL</span> ] )</span><br><span class="line"><span class="keyword">public</span> bool contains ( object $object )</span><br><span class="line"><span class="keyword">public</span> int count ( void )</span><br><span class="line"><span class="keyword">public</span> object current ( void )</span><br><span class="line"><span class="keyword">public</span> void detach ( object $object )</span><br><span class="line"><span class="keyword">public</span> string getHash ( object $object )</span><br><span class="line"><span class="keyword">public</span> mixed getInfo ( void )</span><br><span class="line"><span class="keyword">public</span> int key ( void )</span><br><span class="line"><span class="keyword">public</span> void next ( void )</span><br><span class="line"><span class="keyword">public</span> bool offsetExists ( object $object )</span><br><span class="line"><span class="keyword">public</span> mixed offsetGet ( object $object )</span><br><span class="line"><span class="keyword">public</span> void offsetSet ( object $object [, mixed $data = <span class="keyword">NULL</span> ] )</span><br><span class="line"><span class="keyword">public</span> void offsetUnset ( object $object )</span><br><span class="line"><span class="keyword">public</span> void removeAll ( SplObjectStorage $storage )</span><br><span class="line"><span class="keyword">public</span> void removeAllExcept ( SplObjectStorage $storage )</span><br><span class="line"><span class="keyword">public</span> void rewind ( void )</span><br><span class="line"><span class="keyword">public</span> string serialize ( void )</span><br><span class="line"><span class="keyword">public</span> void setInfo ( mixed $data )</span><br><span class="line"><span class="keyword">public</span> void unserialize ( string $serialized )</span><br><span class="line"><span class="keyword">public</span> bool valid ( void )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从实现可以知道，实现对象存储最重要的一个接口实现  序列化功能 ,能用于stream传递 </li>
+<li>两个重要函数 attach / detach</li>
+<li>经常在框架源码中发现 SplSubject 和 SplObserver 联合使用</li>
+<li>典型应用场景 比如（反射 或者设计模式相关 用于存放对象信息map）</li>
+</ul>
+<h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span>  <span class="title">Car</span></span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">money</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BMW</span> <span class="keyword">implements</span> <span class="title">Car</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $_name;</span><br><span class="line">    <span class="keyword">private</span> $_seri;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span>  <span class="title">__construct</span><span class="params">($name,$seri)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_name = $name;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_seri = $seri;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">money</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getInfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sprintf(<span class="string">"名字：%s 系列：%s 值钱：%s "</span>.PHP_EOL,<span class="keyword">$this</span>-&gt;_name,<span class="keyword">$this</span>-&gt;_seri,<span class="keyword">$this</span>-&gt;money());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$x1 = <span class="keyword">new</span> BMW(<span class="string">"宝马X1"</span>,<span class="string">'X'</span>);</span><br><span class="line">$x3 = <span class="keyword">new</span> BMW(<span class="string">"宝马X3"</span>,<span class="string">'X'</span>);</span><br><span class="line">$x4 = <span class="keyword">new</span> BMW(<span class="string">"宝马X4"</span>,<span class="string">'X'</span>);</span><br><span class="line">$x5 = <span class="keyword">new</span> BMW(<span class="string">"宝马X5"</span>,<span class="string">'X'</span>);</span><br><span class="line"></span><br><span class="line">$container = <span class="keyword">new</span> SplObjectStorage();</span><br><span class="line">$container-&gt;attach($x1);</span><br><span class="line">$container-&gt;attach($x3);</span><br><span class="line">$container-&gt;attach($x4);</span><br><span class="line">$container-&gt;attach($x5);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查看容器对象数量</span></span><br><span class="line">var_dump($container-&gt;count());</span><br><span class="line"><span class="comment">// 干掉x5</span></span><br><span class="line">$container-&gt;detach($x5);</span><br><span class="line"><span class="comment">// 重置指针</span></span><br><span class="line">$container-&gt;rewind();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历对象</span></span><br><span class="line"><span class="keyword">while</span> ($container-&gt;valid())&#123;</span><br><span class="line">    <span class="keyword">echo</span> $container-&gt;current()-&gt;getInfo();</span><br><span class="line">    $container-&gt;next();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**     output</span></span><br><span class="line"><span class="comment">int(4)</span></span><br><span class="line"><span class="comment">名字：宝马X1 系列：X 值钱：0</span></span><br><span class="line"><span class="comment">名字：宝马X3 系列：X 值钱：0</span></span><br><span class="line"><span class="comment">名字：宝马X4 系列：X 值钱：0</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+			<a href="/tags/数据结构/">数据结构</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2015-05-08/反射原理及PHP应用.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">反射原理及PHP应用</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2015-02-05/PHP SPL之数据结构 (链表与堆).html">
+        <span class="next-text nav-default">PHP PHP SPL之数据结构 (链表与堆)</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

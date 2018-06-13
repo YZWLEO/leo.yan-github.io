@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="人工智能之文字识别-PHP"/>
+
+
+
+
+  <meta name="keywords" content="PHP,ML," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2017-08-06/人工智能之图形识别-PHP.html"/>
+
+
+<meta name="description" content="百度AI图形识别为我们提供丰富的应用场景 目前实际应用中在慢慢展开尝试：1234百度OCR文字识别API服务图形图片识别 图片检测人脸检测 审核身份鉴黄鉴暴 图片抽帧 （尝试）   简单使用 123456789101112131415161718192021222324252627282930313233343536&amp;lt;?php/** * Created by PhpStorm. * User">
+<meta name="keywords" content="PHP,ML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工智能之文字识别-PHP">
+<meta property="og:url" content="http://mlyan.top/2017-08-06/人工智能之图形识别-PHP.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="百度AI图形识别为我们提供丰富的应用场景 目前实际应用中在慢慢展开尝试：1234百度OCR文字识别API服务图形图片识别 图片检测人脸检测 审核身份鉴黄鉴暴 图片抽帧 （尝试）   简单使用 123456789101112131415161718192021222324252627282930313233343536&amp;lt;?php/** * Created by PhpStorm. * User">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/face/kazhengshibie.png">
+<meta property="og:image" content="http://mlyan.top/images/face/paizhaoshibie.png">
+<meta property="og:image" content="http://mlyan.top/images/face/wenzishibie.png">
+<meta property="og:updated_time" content="2018-05-03T08:18:40.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="人工智能之文字识别-PHP">
+<meta name="twitter:description" content="百度AI图形识别为我们提供丰富的应用场景 目前实际应用中在慢慢展开尝试：1234百度OCR文字识别API服务图形图片识别 图片检测人脸检测 审核身份鉴黄鉴暴 图片抽帧 （尝试）   简单使用 123456789101112131415161718192021222324252627282930313233343536&amp;lt;?php/** * Created by PhpStorm. * User">
+<meta name="twitter:image" content="http://mlyan.top/images/face/kazhengshibie.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 人工智能之文字识别-PHP - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          人工智能之文字识别-PHP
+        
+      </h1>
+
+      <time class="post-time">
+          Aug 06 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h5 id="百度AI图形识别为我们提供丰富的应用场景"><a href="#百度AI图形识别为我们提供丰富的应用场景" class="headerlink" title="百度AI图形识别为我们提供丰富的应用场景"></a>百度AI图形识别为我们提供丰富的应用场景</h5><ul>
+<li>目前实际应用中在慢慢展开尝试：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">百度OCR文字识别API服务</span><br><span class="line">图形图片识别 图片检测</span><br><span class="line">人脸检测 审核身份</span><br><span class="line">鉴黄鉴暴 图片抽帧 （尝试）</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h4><p><img src="/images/face/kazhengshibie.png" alt="image"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by PhpStorm.</span></span><br><span class="line"><span class="comment"> * User: wei</span></span><br><span class="line"><span class="comment"> * Date: 2017/06/02</span></span><br><span class="line"><span class="comment"> * Time: 15:21</span></span><br><span class="line"><span class="comment"> * 文字卡证识别</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">"./AipOcr.php"</span>;</span><br><span class="line"><span class="keyword">const</span> APP_ID = <span class="string">'your_id'</span>;</span><br><span class="line"><span class="keyword">const</span> APP_KEY = <span class="string">'your_key'</span>;</span><br><span class="line"><span class="keyword">const</span> APP_SECRET_KEY = <span class="string">'your_secret'</span>;</span><br><span class="line">$aipChar = <span class="keyword">new</span> AipOcr(APP_ID,APP_KEY,APP_SECRET_KEY);</span><br><span class="line"></span><br><span class="line">$array_image  = <span class="keyword">array</span>(</span><br><span class="line">    file_get_contents(<span class="string">'./carId.jpg'</span>),</span><br><span class="line">    file_get_contents(<span class="string">'./carId2.jpg'</span>),</span><br><span class="line">    file_get_contents(<span class="string">'./person.jpg'</span>),</span><br><span class="line">    file_get_contents(<span class="string">'./person2.jpg'</span>),</span><br><span class="line">    file_get_contents(<span class="string">'./driver_id.jpg'</span>),</span><br><span class="line">    file_get_contents(<span class="string">'./ticket_bak.png'</span>),</span><br><span class="line">    file_get_contents(<span class="string">'./timg.jpg'</span>),</span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"><span class="comment">// 如果有可选参数</span></span><br><span class="line">$options = <span class="keyword">array</span>();</span><br><span class="line">$options[<span class="string">"language_type"</span>] = <span class="string">"CHN_ENG"</span>;</span><br><span class="line">$options[<span class="string">"detect_direction"</span>] = <span class="string">"true"</span>;</span><br><span class="line">$options[<span class="string">"detect_language"</span>] = <span class="string">"false"</span>;</span><br><span class="line">$options[<span class="string">"probability"</span>] = <span class="string">"true"</span>;</span><br><span class="line"><span class="comment">//普通识别</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*$info = $aipChar-&gt;basicGeneral($array_image['3'],$options);</span></span><br><span class="line"><span class="comment">echo "&lt;pre&gt;";</span></span><br><span class="line"><span class="comment">print_r($info);*/</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/face/paizhaoshibie.png" alt="image"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//高精度识别</span><br><span class="line">/*$info = $aipChar-&gt;basicAccurate($array_image[&apos;1&apos;],$options);</span><br><span class="line">echo &quot;&lt;pre&gt;&quot;;</span><br><span class="line">print_r($info);die;*/</span><br><span class="line"></span><br><span class="line">$idCardSide = &apos;front&apos;;</span><br><span class="line">// 如果有可选参数</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/face/wenzishibie.png" alt="image"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">//身份证 正反面识别</span><br><span class="line">/*$options = array();</span><br><span class="line">$options[&quot;detect_direction&quot;] = &quot;true&quot;;</span><br><span class="line">$options[&quot;detect_risk&quot;] = &quot;false&quot;;</span><br><span class="line">$info = $aipChar-&gt;idcard($array_image[2],$idCardSide,$options);</span><br><span class="line">echo &quot;&lt;pre&gt;&quot;;</span><br><span class="line">print_r($info);*/</span><br><span class="line">$idCardSide = &apos;front&apos;;</span><br><span class="line">// 如果有可选参数</span><br><span class="line">/*$options = array();</span><br><span class="line">$options[&quot;detect_direction&quot;] = &quot;true&quot;;</span><br><span class="line">$options[&quot;detect_risk&quot;] = &quot;false&quot;;</span><br><span class="line">$info = $aipChar-&gt;idcard($array_image[3],$idCardSide,$options);</span><br><span class="line">echo &quot;&lt;pre&gt;&quot;;</span><br><span class="line">print_r($info);*/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//驾驶证识别</span><br><span class="line">/*$options = array();</span><br><span class="line">$options[&quot;detect_direction&quot;] = &quot;true&quot;;</span><br><span class="line">$info = $aipChar-&gt;drivingLicense($array_image[4],$options);</span><br><span class="line">echo &quot;&lt;pre&gt;&quot;;</span><br><span class="line">print_r($info);die;*/</span><br><span class="line"></span><br><span class="line">//普通票据</span><br><span class="line">$options = array();</span><br><span class="line">$options[&quot;recognize_granularity&quot;] = &quot;big&quot;;</span><br><span class="line">$options[&quot;probability&quot;] = &quot;true&quot;;</span><br><span class="line">$options[&quot;accuracy&quot;] = &quot;normal&quot;;</span><br><span class="line">$options[&quot;detect_direction&quot;] = &quot;true&quot;;</span><br><span class="line"></span><br><span class="line">$info = $aipChar-&gt;receipt($array_image[6],$options);</span><br><span class="line">echo &quot;&lt;pre&gt;&quot;;</span><br><span class="line">print_r($info);</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://ai.baidu.com/tech/ocr" target="_blank" rel="noopener">参考链接-百度AI</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+			<a href="/tags/ML/">ML</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2017-08-06/人工智能之人脸检测-PHP.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">人工智能之人脸检测-PHP</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017-01-20/超强的Http Client 封装 Guzzle.html">
+        <span class="next-text nav-default">超强的Http client 封装 Guzzle</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

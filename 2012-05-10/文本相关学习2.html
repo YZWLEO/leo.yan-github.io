@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="文本相关学习2"/>
+
+
+
+
+  <meta name="keywords" content="shell," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2012-05-10/文本相关学习2.html"/>
+
+
+<meta name="description" content="head 显示文件的开头的内容 head -n 10 file //显示文件开始10行 head -c 10 file //显示文件开始10个字符tail 显示文件末内容 与head相反 常用命令 tail -f file 监事某个文件是否变更more 分屏展示文件命令,支持向前翻页 more -c -5 passwd more -dc passwd  less 向前向后分屏查看文件内容 同mor">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文本相关学习2">
+<meta property="og:url" content="http://mlyan.top/2012-05-10/文本相关学习2.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="head 显示文件的开头的内容 head -n 10 file //显示文件开始10行 head -c 10 file //显示文件开始10个字符tail 显示文件末内容 与head相反 常用命令 tail -f file 监事某个文件是否变更more 分屏展示文件命令,支持向前翻页 more -c -5 passwd more -dc passwd  less 向前向后分屏查看文件内容 同mor">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-12T05:46:37.009Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文本相关学习2">
+<meta name="twitter:description" content="head 显示文件的开头的内容 head -n 10 file //显示文件开始10行 head -c 10 file //显示文件开始10个字符tail 显示文件末内容 与head相反 常用命令 tail -f file 监事某个文件是否变更more 分屏展示文件命令,支持向前翻页 more -c -5 passwd more -dc passwd  less 向前向后分屏查看文件内容 同mor">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 文本相关学习2 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          文本相关学习2
+        
+      </h1>
+
+      <time class="post-time">
+          May 10 2012
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="head"><a href="#head" class="headerlink" title="head"></a>head</h4><ul>
+<li>显示文件的开头的内容</li>
+<li>head -n 10 file //显示文件开始10行</li>
+<li>head -c 10 file //显示文件开始10个字符<h4 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h4></li>
+<li>显示文件末内容 与head相反</li>
+<li>常用命令 tail -f file 监事某个文件是否变更<h4 id="more"><a href="#more" class="headerlink" title="more"></a>more</h4></li>
+<li>分屏展示文件命令,支持向前翻页</li>
+<li>more -c -5 passwd</li>
+<li>more -dc passwd</li>
+</ul>
+<h4 id="less"><a href="#less" class="headerlink" title="less"></a>less</h4><ul>
+<li>向前向后分屏查看文件内容 同more</li>
+<li>less -N file </li>
+</ul>
+<h4 id="sed-stream-editor"><a href="#sed-stream-editor" class="headerlink" title="sed (stream editor)"></a>sed (stream editor)</h4><ul>
+<li>流编辑器 </li>
+<li>常和管道命令搭配使用</li>
+<li>功能强悍 单独行匹配，在临时缓存处理内容，处理完成后，输出到屏幕</li>
+<li><p>替换操作 s/ 与贪婪模式 /g   sed ‘s/search/replace/g’ </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@iZ2zei53uuor1iswqlx28pZ pp]# echo "123 456 adb 54 wei" | sed 's/5/8/'</span><br><span class="line">123 486 adb 54 wei</span><br><span class="line">[root@iZ2zei53uuor1iswqlx28pZ pp]# echo "123 456 adb 54 wei" | sed 's/5/8/g'</span><br><span class="line">123 486 adb 84 wei</span><br><span class="line">[root@iZ2zei53uuor1iswqlx28pZ pp]# echo "123 456 adb 54 wei" | sed 's/5/8/2g'</span><br><span class="line">123 456 adb 84 wei</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>sed -i 将在编辑文件字后，重新覆盖原文件 </p>
+</li>
+<li>cat f1.log |sed ‘/^$/d’  //删除f1.log中的空白行</li>
+<li>sed ‘5,$d’ -i f1.log  //删除文件从5行开始至末尾</li>
+<li>sed -n ‘5,$p’ f1.log //显示文件从5行开始至末尾</li>
+<li><p>匹配标记 &amp;</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@iZ2zei53uuor1iswqlx28pZ pp]# echo "my math score is 100 and my english is 60"|sed 's/[0-9]\+/&#123;&amp;&#125;/g'</span><br><span class="line">my math score is &#123;100&#125; and my english is &#123;60&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>sed -e ‘pattern1’ -e ‘pattern2’ file 多模式处理</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iZ2zei53uuor1iswqlx28pZ pp]# echo -e '123\n 456 789\n l love chengdu 666'|sed -e '1,2d' -e 's/[0-9]\+/good/g'</span><br><span class="line"> l love chengdu good</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="wc"><a href="#wc" class="headerlink" title="wc"></a>wc</h4><ul>
+<li><p>word count 单词计数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-c或--bytes或——chars：只显示Bytes数</span><br><span class="line">-l或——lines：只显示列数</span><br><span class="line">-w或——words：只显示字数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>wc -l file //常和管道配合使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ll *.log | wc -l //统计log 日志条数</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="awk-文本处理的瑞士军刀-来源于纪念三个人的首字母命名"><a href="#awk-文本处理的瑞士军刀-来源于纪念三个人的首字母命名" class="headerlink" title="awk 文本处理的瑞士军刀 ,来源于纪念三个人的首字母命名"></a>awk 文本处理的瑞士军刀 ,来源于纪念三个人的首字母命名</h4><ul>
+<li>awk [options] ‘BEGIN{ print “start” } pattern{ commands } END{ print “end” }’ file</li>
+<li><p>内置变量<br>  [A][N][P][G]表示第一个支持变量的工具，[A]=awk、[N]=nawk、[P]=POSIXawk、[G]=gawk</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$n 当前记录的第n个字段，比如n为1表示第一个字段，n为2表示第二个字段。 </span><br><span class="line">$0 这个变量包含执行过程中当前行的文本内容。</span><br><span class="line">[N] ARGC 命令行参数的数目。</span><br><span class="line">[G] ARGIND 命令行中当前文件的位置（从0开始算）。</span><br><span class="line">[N] ARGV 包含命令行参数的数组。</span><br><span class="line">[G] CONVFMT 数字转换格式（默认值为%.6g）。</span><br><span class="line">[P] ENVIRON 环境变量关联数组。</span><br><span class="line">[N] ERRNO 最后一个系统错误的描述。</span><br><span class="line">[G] FIELDWIDTHS 字段宽度列表（用空格键分隔）。</span><br><span class="line">[A] FILENAME 当前输入文件的名。</span><br><span class="line">[P] FNR 同NR，但相对于当前文件。</span><br><span class="line">[A] FS 字段分隔符（默认是任何空格）。</span><br><span class="line">[G] IGNORECASE 如果为真，则进行忽略大小写的匹配。</span><br><span class="line">[A] NF 表示字段数，在执行过程中对应于当前的字段数。</span><br><span class="line">[A] NR 表示记录数，在执行过程中对应于当前的行号。</span><br><span class="line">[A] OFMT 数字的输出格式（默认值是%.6g）。</span><br><span class="line">[A] OFS 输出字段分隔符（默认值是一个空格）。</span><br><span class="line">[A] ORS 输出记录分隔符（默认值是一个换行符）。</span><br><span class="line">[A] RS 记录分隔符（默认是一个换行符）。</span><br><span class="line">[N] RSTART 由match函数所匹配的字符串的第一个位置。</span><br><span class="line">[N] RLENGTH 由match函数所匹配的字符串的长度。</span><br><span class="line">[N] SUBSEP 数组下标分隔符（默认值是34）。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>awk -F : ‘BEGIN{ print”Start” } { print  $1} END{print”End”}’ mypas</p>
+</li>
+</ul>
+<p><a href="https://linuxtoy.org/pages/talks.html" target="_blank" rel="noopener">参考链接#linuxtoy</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/shell/">shell</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2012-05-10/文件查找相关.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">文件相关</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2012-05-01/文本相关学习1.html">
+        <span class="next-text nav-default">文本相关学习1</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

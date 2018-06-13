@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Hadoop 环境搭建"/>
+
+
+
+
+  <meta name="keywords" content="Hadoop,BIGDATA," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2017-12-05/Hadoop 环境安装步骤学习.html"/>
+
+
+<meta name="description" content="Hadoop 环境搭建(学习参考)必备：Linux 、Jdk、Hadoop-2.7.3.tar.gz为例 1234561.设置Linux基本环境，关闭防火墙、配置主机2.安装Jdk 并设置环境变量 ~/.bash_profile  验证java环境 java -version3.安装Hadoop eg: tar -zxvf hadoop-2.7.3.tar.gz -C /安装目录4.设置HADOO">
+<meta name="keywords" content="Hadoop,BIGDATA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop 环境搭建">
+<meta property="og:url" content="http://mlyan.top/2017-12-05/Hadoop 环境安装步骤学习.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="Hadoop 环境搭建(学习参考)必备：Linux 、Jdk、Hadoop-2.7.3.tar.gz为例 1234561.设置Linux基本环境，关闭防火墙、配置主机2.安装Jdk 并设置环境变量 ~/.bash_profile  验证java环境 java -version3.安装Hadoop eg: tar -zxvf hadoop-2.7.3.tar.gz -C /安装目录4.设置HADOO">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/hadoop_hj.png">
+<meta property="og:image" content="http://mlyan.top/images/hadoop_weifenbu.png">
+<meta property="og:image" content="http://mlyan.top/images/hadoop_format.png">
+<meta property="og:image" content="http://mlyan.top/images/hadoop_moniquanfenbu.png">
+<meta property="og:image" content="http://mlyan.top/images/ssh_mianmi.png">
+<meta property="og:image" content="http://mlyan.top/images/start_stop_flow.png">
+<meta property="og:image" content="http://mlyan.top/images/yarn_webconsole.png">
+<meta property="og:image" content="http://mlyan.top/images/summary.png">
+<meta property="og:image" content="http://mlyan.top/images/start_log.png">
+<meta property="og:updated_time" content="2018-04-20T07:59:39.747Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hadoop 环境搭建">
+<meta name="twitter:description" content="Hadoop 环境搭建(学习参考)必备：Linux 、Jdk、Hadoop-2.7.3.tar.gz为例 1234561.设置Linux基本环境，关闭防火墙、配置主机2.安装Jdk 并设置环境变量 ~/.bash_profile  验证java环境 java -version3.安装Hadoop eg: tar -zxvf hadoop-2.7.3.tar.gz -C /安装目录4.设置HADOO">
+<meta name="twitter:image" content="http://mlyan.top/images/hadoop_hj.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> Hadoop 环境搭建 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Hadoop 环境搭建
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 05 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="Hadoop-环境搭建-学习参考"><a href="#Hadoop-环境搭建-学习参考" class="headerlink" title="Hadoop 环境搭建(学习参考)"></a>Hadoop 环境搭建(学习参考)</h4><p>必备：Linux 、Jdk、Hadoop-2.7.3.tar.gz为例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.设置Linux基本环境，关闭防火墙、配置主机</span><br><span class="line">2.安装Jdk 并设置环境变量 ~/.bash_profile  验证java环境 java -version</span><br><span class="line">3.安装Hadoop eg: tar -zxvf hadoop-2.7.3.tar.gz -C /安装目录</span><br><span class="line">4.设置HADOOP_HOME 环境变量并生效  验证 hadoop version</span><br><span class="line">5.生成ssh免密登录秘钥 ,配置~/.ssh 公钥验证</span><br><span class="line">6.hadoop 的三种安装模式配置，了解两种运行模式（安全、非安全【只读】）</span><br></pre></td></tr></table></figure>
+<p><img src="/images/hadoop_hj.png" alt="image" title="模拟全分布安装环境"></p>
+<hr>
+<h6 id="（一）本地模式-单机-n-1"><a href="#（一）本地模式-单机-n-1" class="headerlink" title="（一）本地模式(单机 n=1)"></a>（一）本地模式(单机 n=1)</h6><blockquote>
+<p>特点</p>
+<ul>
+<li>没有HDFS</li>
+<li>只能测试MapReduce程序,处理本地Linux jar文件 如WordCount</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>配置</p>
+</blockquote>
+<ul>
+<li>配置文件 hadoop-env.sh （haddop 环境变量设置相关）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. echo $JAVA_HOME</span><br><span class="line">2. 大概26行左右 修改 JAVA_HOME 为上面的目录输出</span><br><span class="line">3. 验证wordcount Demo例子 hadoop jar hadoop-mapreduce-examples-2.7.3.jar wordcount ~/input/data.txt ~/output</span><br></pre></td></tr></table></figure>
+<p><img src="/images/hadoop_weifenbu.png" alt="image"></p>
+<h5 id="二-伪分布模式-单机-n-1"><a href="#二-伪分布模式-单机-n-1" class="headerlink" title="(二) 伪分布模式(单机 n=1)"></a>(二) 伪分布模式(单机 n=1)</h5><blockquote>
+<p>特点</p>
+<ul>
+<li>模拟分布式环境，常用于开发调试，具备hadoop的主要功能使用</li>
+<li>HDFS: namenode+datanode+secondarynamenode</li>
+<li>Yarn: resourcemanager+nodemanager</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>配置</p>
+<ul>
+<li>配置文件 hadoop-env.sh （haddop 环境变量设置相关）</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. echo $JAVA_HOME</span><br><span class="line">2. 大概26行左右 修改 JAVA_HOME 为上面的目录输出</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置文件 hadoop-site.xml （haddop 数据冗余度，数据节点dataNode ，名称节点nameNode ）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--表示数据块的冗余度，默认：3--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&lt;!--是否开启HDFS的权限检查，默认true--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>配置文件 core-site.xml （haddop rpc端口，文件系统存储目录等 ）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置NameNode地址,9000是RPC通信端口--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;hdfs://bigdata111:9000&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;	</span><br><span class="line"></span><br><span class="line">&lt;!--HDFS数据保存在Linux的哪个目录，默认值是Linux的tmp目录--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;/root/training/hadoop-2.7.3/tmp&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置文件 mapred-site.xml （默认不存在,需拷贝template,主要作用是指定MapReduce框架 ）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--MR运行的框架--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置文件 yarn-site.xml （利用yarn管理调度hadoop job 洗牌【shuffle】过程 ）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--Yarn的主节点RM的位置--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;bigdata111&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;	</span><br><span class="line"></span><br><span class="line">&lt;!--MapReduce运行方式：shuffle洗牌--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>格式化HDFS文件系统 </p>
+<ul>
+<li>hdfs namenode -format </li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Storage directory /xxxx/tmp/dfs/name has been successfully formatted.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动或停止Hadoop环境 </p>
+<ul>
+<li>start-all.sh stop-all.sh start-dfs.sh </li>
+</ul>
+</blockquote>
+<blockquote>
+<p>访问或验证</p>
+<ul>
+<li>web Yarn:<a href="http://bigdata111:8088" target="_blank" rel="noopener">http://bigdata111:8088</a></li>
+<li>HDFS http:bigdata111:50070(50090)</li>
+<li>验证: 执行命令 /jps 查看状态<br><img src="/images/hadoop_format.png" alt="image" title="模拟分布启动"></li>
+</ul>
+</blockquote>
+<hr>
+<h6 id="（三）全分布模式-生产模式-单机-n-gt-3"><a href="#（三）全分布模式-生产模式-单机-n-gt-3" class="headerlink" title="（三）全分布模式#生产模式(单机 n&gt;=3)"></a>（三）全分布模式#生产模式(单机 n&gt;=3)</h6><blockquote>
+<p>准备工作</p>
+<ul>
+<li>规划网络资源分配（如图）</li>
+</ul>
+</blockquote>
+<p><a href="https://www.processon.com/view/link/5ad94096e4b0b74a6de94146" target="_blank" rel="noopener"><img src="/images/hadoop_moniquanfenbu.png" alt="image" title="模拟全部发规划">
+</a></p>
+<ul>
+<li>主机3台:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bigdata112   &#123;nameNode&#125;</span><br><span class="line">bigdata113   &#123;dataNode&#125;</span><br><span class="line">bigdata114   &#123;dataNode&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>所有主机关闭防火墙 systemctl status|stop|disable firewalld.service</li>
+<li>所有主机配置免密登录</li>
+<li>nameNode 配置jdk 环境，scp同步dataNode，分别设置jdk环境变量</li>
+<li>设置主机nameNode /etc/hosts scp 同步dataNode节点</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.157.112 bigdata112</span><br><span class="line">192.168.157.113 bigdata113</span><br><span class="line">192.168.157.114 bigdata114</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ssh_mianmi.png" alt="image" title="SSH免密"></p>
+<ul>
+<li>设置同步时间，这里都和NameNode 同步（可设置网络同步）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">设置/etc/ntp.conf</span><br><span class="line">service ntpd restart</span><br><span class="line">ntpdate  host //dataNode主机上执行</span><br><span class="line">hwclock --hctosys</span><br><span class="line">hwclock --systohc &#123;哦用这个&#125;</span><br><span class="line">两个参数hctosys、systohc是一对意思相反的参数，</span><br><span class="line">hctosys是将时间从硬件时钟同步到系统，</span><br><span class="line">systohc是将时间从系统同步到硬件时间</span><br></pre></td></tr></table></figure>
+<ul>
+<li>NameNode安装Hadoop环境并配置环境变量</li>
+</ul>
+<blockquote>
+<p>配置(同伪分布环境配置一样（把节点冗余改为2） 外加上salves配置)</p>
+</blockquote>
+<ul>
+<li>配置文件 hadoop-site.xml （haddop 数据冗余度，数据节点dataNode ，名称节点nameNode ）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--表示数据块的冗余度，默认：3--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;2&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&lt;!--是否开启HDFS的权限检查，默认true--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;dfs.permissions&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>配置文件 core-site.xml （haddop rpc端口，文件系统存储目录等 ）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置NameNode地址,9000是RPC通信端口--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;hdfs://bigdata112:9000&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;	</span><br><span class="line"></span><br><span class="line">&lt;!--HDFS数据保存在Linux的哪个目录，默认值是Linux的tmp目录--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;/root/training/hadoop-2.7.3/tmp&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置文件 mapred-site.xml （默认不存在,需拷贝template,主要作用是指定MapReduce框架 ）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--MR运行的框架--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置文件 yarn-site.xml （利用yarn管理调度hadoop job 洗牌【shuffle】过程 ）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--Yarn的主节点RM的位置--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;bigdata112&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;	</span><br><span class="line"></span><br><span class="line">&lt;!--MapReduce运行方式：shuffle洗牌--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">   &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置文件slaves (主要设置dataNode节点，默认是本机 localhost)</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bigdata113</span><br><span class="line">bigdata114</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>格式化HDFS文件系统 hdfs namenode -format </p>
+</li>
+<li><p>把主节点同步到数据节点，设置数据节点hadoop环境变量</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r hadoop-2.7.3/ root@bigdata113:/root/training</span><br><span class="line">scp -r hadoop-2.7.3/ root@bigdata114:/root/training</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动或停止Hadoop环境 </p>
+<ul>
+<li>start-all.sh stop-all.sh start-dfs.sh<br><img src="/images/start_stop_flow.png" alt="image" title="环境启动停止"><br>访问或验证</li>
+<li>web Yarn:<a href="http://bigdata112:8088" target="_blank" rel="noopener">http://bigdata112:8088</a></li>
+<li>HDFS http:bigdata111:50070(50090)</li>
+<li>验证: 执行命令 /jps 查看状态<br><img src="/images/yarn_webconsole.png" alt="image" title="YARN"><br><img src="/images/summary.png" alt="image"></li>
+</ul>
+</blockquote>
+<p><img src="/images/start_log.png" alt="image" title="启动日志"></p>
+<hr>
+<blockquote>
+<p>以上涉及的问题会抽时间同步更新并附上</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><a href="http://hadoop.apache.org/docs/r1.0.4/cn/cluster_setup.html" target="_blank" rel="noopener">参考链接</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.cnblogs.com/yinghun/p/6230436.html" target="_blank" rel="noopener">参考链接</a></p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/Hadoop/">Hadoop</a>
+		  
+			<a href="/tags/BIGDATA/">BIGDATA</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018-03-01/Scala 学习（基础语法）.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Scala 学习（基础语法）</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017-11-20/Hadoop目录结构.html">
+        <span class="next-text nav-default">Hadoop目录结构</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

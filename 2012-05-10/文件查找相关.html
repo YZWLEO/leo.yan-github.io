@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="文件相关"/>
+
+
+
+
+  <meta name="keywords" content="shell," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2012-05-10/文件查找相关.html"/>
+
+
+<meta name="description" content="which 用于查找并显示给定命令的绝对路径 which –help man which info which12# which groupadd/usr/sbin/groupadd   whereis 命令用来定位指令的二进制程序、源代码文件和man手册页等相关文件的路径 基于linux记录的数据库文件搜索（不实时）# updatedb  find 根据选项参数查找指定目录下文件 功能强悍，磁盘">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件相关">
+<meta property="og:url" content="http://mlyan.top/2012-05-10/文件查找相关.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="which 用于查找并显示给定命令的绝对路径 which –help man which info which12# which groupadd/usr/sbin/groupadd   whereis 命令用来定位指令的二进制程序、源代码文件和man手册页等相关文件的路径 基于linux记录的数据库文件搜索（不实时）# updatedb  find 根据选项参数查找指定目录下文件 功能强悍，磁盘">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-12T05:46:34.681Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文件相关">
+<meta name="twitter:description" content="which 用于查找并显示给定命令的绝对路径 which –help man which info which12# which groupadd/usr/sbin/groupadd   whereis 命令用来定位指令的二进制程序、源代码文件和man手册页等相关文件的路径 基于linux记录的数据库文件搜索（不实时）# updatedb  find 根据选项参数查找指定目录下文件 功能强悍，磁盘">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 文件相关 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          文件相关
+        
+      </h1>
+
+      <time class="post-time">
+          May 10 2012
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="which"><a href="#which" class="headerlink" title="which"></a>which</h4><ul>
+<li>用于查找并显示给定命令的绝对路径</li>
+<li>which –help</li>
+<li>man which</li>
+<li>info which<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">which</span> groupadd</span></span><br><span class="line">/usr/sbin/groupadd</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="whereis"><a href="#whereis" class="headerlink" title="whereis"></a>whereis</h4><ul>
+<li>命令用来定位指令的二进制程序、源代码文件和man手册页等相关文件的路径</li>
+<li>基于linux记录的数据库文件搜索（不实时）# updatedb</li>
+</ul>
+<h4 id="find"><a href="#find" class="headerlink" title="find"></a>find</h4><ul>
+<li>根据选项参数查找指定目录下文件</li>
+<li>功能强悍，磁盘全扫描，效率相对低</li>
+<li>find –help<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 查找/home/www 目录下 所有后缀 .log的文件</span><br><span class="line"><span class="meta">#</span><span class="bash"> find /home/www -name <span class="string">'*.log'</span></span></span><br><span class="line"></span><br><span class="line">// 查看目录下 所有以 .txt or .log 结尾的文件</span><br><span class="line"><span class="meta">#</span><span class="bash"> find /home/www \( -name <span class="string">"*.txt"</span> -o -name <span class="string">'*.log'</span> \)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">find . -type 类型参数</span><br><span class="line">类型参数列表：</span><br><span class="line"></span><br><span class="line">f 普通文件</span><br><span class="line">l 符号连接</span><br><span class="line">d 目录</span><br><span class="line">c 字符设备</span><br><span class="line">b 块设备</span><br><span class="line">s 套接字</span><br><span class="line">p Fifo</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="strings-不常用"><a href="#strings-不常用" class="headerlink" title="strings 不常用"></a>strings 不常用</h4><ul>
+<li>在对象文件或二进制文件中查找可打印的字符串</li>
+</ul>
+<h4 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h4><ul>
+<li>比较给定的两个文件的不同 </li>
+<li>diff –help  功能强悍</li>
+<li>diff 对比模式 默认模式|context模式 diff -c| Unified diff -u</li>
+<li>diff -u 较常用  返回合并之后的文件 简洁明了<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">cat f1.log</span></span><br><span class="line">1 i love beijing</span><br><span class="line">2 my name is leo </span><br><span class="line">3 </span><br><span class="line">4 here you are</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">cat f2.log</span></span><br><span class="line">1 i love chengdu</span><br><span class="line">2 my name is wei </span><br><span class="line">3 juejue </span><br><span class="line">4 here you are</span><br><span class="line">5 RPC ws</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 普通模式 对比两个文件差异</span><br><span class="line"><span class="meta">#</span><span class="bash"> diff f1.log f2.log</span></span><br><span class="line">1,3c1,3 //f1.log 1行到3行 与 f2.log 1行到3行有变动 change</span><br><span class="line">&lt; i love beijing</span><br><span class="line">&lt; my name is leo </span><br><span class="line">&lt; </span><br><span class="line">---</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> i love chengdu</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> my name is wei </span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> juejue </span></span><br><span class="line">4a5//f1.log 第四行之后追加 以下RPC ws 才与 f2.log 一致</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> RPC ws</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">// context 模式</span><br><span class="line"><span class="meta">#</span><span class="bash"> diff -c fl.log f2.log</span></span><br><span class="line">*** f1.log	2011-05-28 15:32:45.568323758 +0800</span><br><span class="line">--- f2.log	2011-05-28 15:33:54.043640569 +0800</span><br><span class="line">***************</span><br><span class="line">*** 1,4 ****</span><br><span class="line">! i love beijing</span><br><span class="line">! my name is leo </span><br><span class="line">! </span><br><span class="line">  here you are</span><br><span class="line">--- 1,5 ----</span><br><span class="line">! i love chengdu</span><br><span class="line">! my name is wei </span><br><span class="line">! juejue </span><br><span class="line">  here you are</span><br><span class="line">+ RPC ws</span><br><span class="line"></span><br><span class="line">// unified 模式</span><br><span class="line"><span class="meta">#</span><span class="bash"> diff -u f1.log f2.log</span></span><br><span class="line">*** f1.log	2011-05-28 15:32:45.568323758 +0800</span><br><span class="line">--- f2.log	2011-05-28 15:33:54.043640569 +0800</span><br><span class="line">***************</span><br><span class="line">*** 1,4 ****</span><br><span class="line">! i love beijing</span><br><span class="line">! my name is leo </span><br><span class="line">! </span><br><span class="line">  here you are</span><br><span class="line">--- 1,5 ----</span><br><span class="line">! i love chengdu</span><br><span class="line">! my name is wei </span><br><span class="line">! juejue </span><br><span class="line">  here you are</span><br><span class="line">+ RPC ws</span><br><span class="line"></span><br><span class="line">//递归对比目录</span><br><span class="line"><span class="meta">#</span><span class="bash"> diff -r -q dir1 dir2</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="cmp-（我不常用）"><a href="#cmp-（我不常用）" class="headerlink" title="cmp （我不常用）"></a>cmp （我不常用）</h4><ul>
+<li>二进制比较命令</li>
+<li>比较两个文件的内容并报告不同的第一个字符</li>
+<li>cmp -[l|s] file1 file2</li>
+</ul>
+<p><a href="https://linuxtoy.org/pages/talks.html" target="_blank" rel="noopener">参考链接#linuxtoy</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/shell/">shell</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014-05-02/深入学习同步异步与阻塞非阻塞.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">同步(Sync)/异步(Async)，阻塞(Block)/非阻塞(Unblock)</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2012-05-10/文本相关学习2.html">
+        <span class="next-text nav-default">文本相关学习2</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="二维码登录原理理解"/>
+
+
+
+
+  <meta name="keywords" content="PHP," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2015-10-06/二维码登录原理理解.html"/>
+
+
+<meta name="description" content="二维码登录 静态二维码 (包含的信息相同,没有有效期概念，通用) 动态二维码 （每次刷新，包含信息不同，有有效期概念，特定场景）  以二维码登录为例，大多采用动态二维码，如果不是，也只是一个静态信息代理而已，最终实现是动态二维码过程    大概流程解析1234567891011121314151617/**1. 点击浏览器，向服务器请求生成一个二维码2. 服务器一般是散列或者uuid和过期信息并生">
+<meta name="keywords" content="PHP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二维码登录原理理解">
+<meta property="og:url" content="http://mlyan.top/2015-10-06/二维码登录原理理解.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="二维码登录 静态二维码 (包含的信息相同,没有有效期概念，通用) 动态二维码 （每次刷新，包含信息不同，有有效期概念，特定场景）  以二维码登录为例，大多采用动态二维码，如果不是，也只是一个静态信息代理而已，最终实现是动态二维码过程    大概流程解析1234567891011121314151617/**1. 点击浏览器，向服务器请求生成一个二维码2. 服务器一般是散列或者uuid和过期信息并生">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/io/qrcode_login.png">
+<meta property="og:updated_time" content="2018-05-18T03:28:44.571Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二维码登录原理理解">
+<meta name="twitter:description" content="二维码登录 静态二维码 (包含的信息相同,没有有效期概念，通用) 动态二维码 （每次刷新，包含信息不同，有有效期概念，特定场景）  以二维码登录为例，大多采用动态二维码，如果不是，也只是一个静态信息代理而已，最终实现是动态二维码过程    大概流程解析1234567891011121314151617/**1. 点击浏览器，向服务器请求生成一个二维码2. 服务器一般是散列或者uuid和过期信息并生">
+<meta name="twitter:image" content="http://mlyan.top/images/io/qrcode_login.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> 二维码登录原理理解 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          二维码登录原理理解
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 06 2015
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="二维码登录"><a href="#二维码登录" class="headerlink" title="二维码登录"></a>二维码登录</h4><ul>
+<li>静态二维码 (包含的信息相同,没有有效期概念，通用)</li>
+<li><p>动态二维码 （每次刷新，包含信息不同，有有效期概念，特定场景）</p>
+</li>
+<li><p>以二维码登录为例，大多采用动态二维码，如果不是，也只是一个静态信息代理而已，最终实现是动态二维码过程</p>
+</li>
+</ul>
+<p><img src="/images/io/qrcode_login.png" alt="image"></p>
+<h4 id="大概流程解析"><a href="#大概流程解析" class="headerlink" title="大概流程解析"></a>大概流程解析</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">1. 点击浏览器，向服务器请求生成一个二维码</span></span><br><span class="line"><span class="comment">2. 服务器一般是散列或者uuid和过期信息并生成二维码图片返回给客户端</span></span><br><span class="line"><span class="comment">3. 客户端展示二维码信息，并设置轮询监听二维码状态</span></span><br><span class="line"><span class="comment">4. 如果二维码一直展示，没有被识别，到有效期了就会提示二维码失效</span></span><br><span class="line"><span class="comment">5. 如果二维码被扫码了，服务端对比在有效期内并返回新的二维码状态</span></span><br><span class="line"><span class="comment">6. 客户端二维码提示被扫描了，手机端提示确认登录，点击确认提交信息 包含 uuid+用户信息</span></span><br><span class="line"><span class="comment">7. 服务端收到信息，绑定uuid和用户信息 返回登录成功</span></span><br><span class="line"><span class="comment">8. 客户端识别成功标识，刷新或者跳转到之前ref</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/PHP/">PHP</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016-01-01/如何学习掌握一项新技术.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">如何学习掌握一项新技术</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2015-09-01/怎么理解PHP5.5中迭代器、生成器与协程处理.html">
+        <span class="next-text nav-default">怎么理解PHP5.5中迭代器与协程处理</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

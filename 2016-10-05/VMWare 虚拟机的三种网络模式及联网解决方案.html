@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="VMWare网络模式"/>
+
+
+
+
+  <meta name="keywords" content="linux,VMWare," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2016-10-05/VMWare 虚拟机的三种网络模式及联网解决方案.html"/>
+
+
+<meta name="description" content="安装完虚拟机，一般会有3种网络模式 123456Bridged（桥接模式）      对应本地虚拟网卡 Vnet0NAT（网络地址转换模式）   对应本地虚拟网卡 Vnet8Host-Only（仅主机模式）   对应本地虚拟网卡 Vnet1## 编辑        虚拟机（VM本身）-&amp;gt;虚拟网络编辑-&amp;gt;编辑修改网络配置  Bridged（桥接模式）123456789什么是桥接模式？桥接">
+<meta name="keywords" content="linux,VMWare">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VMWare网络模式">
+<meta property="og:url" content="http://mlyan.top/2016-10-05/VMWare 虚拟机的三种网络模式及联网解决方案.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="安装完虚拟机，一般会有3种网络模式 123456Bridged（桥接模式）      对应本地虚拟网卡 Vnet0NAT（网络地址转换模式）   对应本地虚拟网卡 Vnet8Host-Only（仅主机模式）   对应本地虚拟网卡 Vnet1## 编辑        虚拟机（VM本身）-&amp;gt;虚拟网络编辑-&amp;gt;编辑修改网络配置  Bridged（桥接模式）123456789什么是桥接模式？桥接">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://www.linuxidc.com/upload/2016_09/160926204625481.png">
+<meta property="og:image" content="https://www.linuxidc.com/upload/2016_09/160926204664451.png">
+<meta property="og:image" content="https://www.linuxidc.com/upload/2016_09/160926204874121.png">
+<meta property="og:updated_time" content="2018-04-22T07:22:28.735Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VMWare网络模式">
+<meta name="twitter:description" content="安装完虚拟机，一般会有3种网络模式 123456Bridged（桥接模式）      对应本地虚拟网卡 Vnet0NAT（网络地址转换模式）   对应本地虚拟网卡 Vnet8Host-Only（仅主机模式）   对应本地虚拟网卡 Vnet1## 编辑        虚拟机（VM本身）-&amp;gt;虚拟网络编辑-&amp;gt;编辑修改网络配置  Bridged（桥接模式）123456789什么是桥接模式？桥接">
+<meta name="twitter:image" content="https://www.linuxidc.com/upload/2016_09/160926204625481.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> VMWare网络模式 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          VMWare网络模式
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 05 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>安装完虚拟机，一般会有3种网络模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Bridged（桥接模式）      对应本地虚拟网卡 Vnet0</span><br><span class="line">NAT（网络地址转换模式）   对应本地虚拟网卡 Vnet8</span><br><span class="line">Host-Only（仅主机模式）   对应本地虚拟网卡 Vnet1</span><br><span class="line"></span><br><span class="line">## 编辑</span><br><span class="line">        虚拟机（VM本身）-&gt;虚拟网络编辑-&gt;编辑修改网络配置</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="Bridged（桥接模式）"><a href="#Bridged（桥接模式）" class="headerlink" title="Bridged（桥接模式）"></a>Bridged（桥接模式）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">什么是桥接模式？</span><br><span class="line">桥接模式就是将主机网卡与虚拟机虚拟的网卡利用虚拟网桥进行通信。</span><br><span class="line">在桥接的作用下，类似于把物理主机虚拟为一个交换机，</span><br><span class="line">所有桥接设置的虚拟机连接到这个交换机的一个接口上，</span><br><span class="line">物理主机也同样插在这个交换机当中，</span><br><span class="line">所以所有桥接下的网卡与网卡都是交换模式的，</span><br><span class="line">相互可以访问而不干扰。</span><br><span class="line">在桥接模式下，虚拟机ip地址需要与主机在同一个网段，</span><br><span class="line">如果需要联网，则网关与DNS需要与主机网卡一致。其网络结构如下图所示</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.linuxidc.com/upload/2016_09/160926204625481.png" alt="image"></p>
+<hr>
+<h4 id="NAT（地址转换模式）"><a href="#NAT（地址转换模式）" class="headerlink" title="NAT（地址转换模式）"></a>NAT（地址转换模式）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果你的网络ip资源紧缺，但是你又希望你的虚拟机能够联网，</span><br><span class="line">这时候NAT模式是最好的选择。</span><br><span class="line">NAT模式借助虚拟NAT设备和虚拟DHCP服务器，</span><br><span class="line">使得虚拟机可以联网。其网络结构如下图所示</span><br></pre></td></tr></table></figure>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://www.linuxidc.com/upload/2016_09/160926204664451.png" alt="image"></h2><h4 id="Host-Only（仅主机模式）"><a href="#Host-Only（仅主机模式）" class="headerlink" title="Host-Only（仅主机模式）"></a>Host-Only（仅主机模式）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Host-Only模式其实就是NAT模式去除了虚拟NAT设备，</span><br><span class="line">然后使用VMware Network Adapter VMnet1虚拟网卡</span><br><span class="line">连接VMnet1虚拟交换机来与虚拟机通信的，</span><br><span class="line">Host-Only模式将虚拟机与外网隔开，</span><br><span class="line">使得虚拟机成为一个独立的系统，</span><br><span class="line">只与主机相互通讯。其网络结构如下图所示</span><br></pre></td></tr></table></figure>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="https://www.linuxidc.com/upload/2016_09/160926204874121.png" alt="image"></h2><blockquote>
+<p><a href="https://www.linuxidc.com/Linux/2016-09/135521.htm" target="_blank" rel="noopener">参考链接</a></p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/linux/">linux</a>
+		  
+			<a href="/tags/VMWare/">VMWare</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016-11-17/大数据.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">什么是大数据</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016-09-06/二维码与PHP.html">
+        <span class="next-text nav-default">二维码-Qrcode</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
