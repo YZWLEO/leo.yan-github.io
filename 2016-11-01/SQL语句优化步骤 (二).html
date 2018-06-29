@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="SQL语句优化步骤 (二)"/>
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2016-11-01/SQL语句优化步骤 (二).html"/>
+
+
+<meta name="description" content="表分析与优化 (注意会造成锁表 生产环境慎用)    1234567891011121314//查看索引信息  注意字段cardinality（“散列程度”），太小则可以认为索引基本失效show index from tbl;//分析  local 取消binlog写入analyze [local]  Table tbl;//check table 检查表及索引是否同步更新或异常check ta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL语句优化步骤 (二)">
+<meta property="og:url" content="http://mlyan.top/2016-11-01/SQL语句优化步骤 (二).html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="表分析与优化 (注意会造成锁表 生产环境慎用)    1234567891011121314//查看索引信息  注意字段cardinality（“散列程度”），太小则可以认为索引基本失效show index from tbl;//分析  local 取消binlog写入analyze [local]  Table tbl;//check table 检查表及索引是否同步更新或异常check ta">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-29T06:24:09.985Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL语句优化步骤 (二)">
+<meta name="twitter:description" content="表分析与优化 (注意会造成锁表 生产环境慎用)    1234567891011121314//查看索引信息  注意字段cardinality（“散列程度”），太小则可以认为索引基本失效show index from tbl;//分析  local 取消binlog写入analyze [local]  Table tbl;//check table 检查表及索引是否同步更新或异常check ta">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> SQL语句优化步骤 (二) - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SQL语句优化步骤 (二)
+        
+      </h1>
+
+      <time class="post-time">
+          Nov 01 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <ul>
+<li>表分析与优化<blockquote>
+<p>(注意会造成锁表 生产环境慎用)</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//查看索引信息  注意字段cardinality（“散列程度”），太小则可以认为索引基本失效</span><br><span class="line">show index from tbl;</span><br><span class="line">//分析  local 取消binlog写入</span><br><span class="line">analyze [local]  Table tbl;</span><br><span class="line">//check table 检查表及索引是否同步更新或异常</span><br><span class="line">check table tbl;</span><br><span class="line"></span><br><span class="line">//Optimize Table 碎片整理，如果表经常更新或物理删除记录 可释放空间</span><br><span class="line">optimize [local] table tbl</span><br><span class="line"></span><br><span class="line">//修复表 </span><br><span class="line">repair table tbl</span><br><span class="line"></span><br><span class="line">//同 mysqlcheck 命令</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>myisam 引擎 导入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">load data infile &quot;/data/mysql/e.sql&quot; into table e fields terminated by &apos;,&apos;;</span><br><span class="line"></span><br><span class="line">//大批量导入非空表 可设置，提高效率</span><br><span class="line"></span><br><span class="line">alter table tbl_name disable keys;</span><br><span class="line">load data infile &apos;/path/file&apos;</span><br><span class="line">alter table tbl_name enable keys;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>导出文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from e into outfile &quot;/data/mysql/e.sql&quot; fields terminated by &apos;,&apos;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>innodb 引擎导入</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 按主键顺序排列导入</span><br><span class="line">2. 关闭唯一性校验 set unique_checks=0 结束后 恢复</span><br><span class="line">3. 使用自动方式提交  </span><br><span class="line">   导入前  set autocommit=0 </span><br><span class="line">   导入后  set autocommit=1</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>insert 优化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 尽量使用多个值表的insert 替代单个 （减少客户端与数据库的连接 关闭 提高效率）</span><br><span class="line">2. INSERT DELAYED  特定引擎 myisam（5.6 被抛弃 并且8不在支持） 写入队列 当前线程空闲时才会把数据刷到磁盘</span><br><span class="line">3. 将文件和数据分开存放 提高磁盘io</span><br><span class="line">4. 增强设置 bulk_insert_buffer_size myisam 有效</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>排序优化</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 有序索引顺序扫描直接返回有序数据  explain时 using Index 可以</span><br><span class="line">2. 对返回数据进行排序 (不是通过索引直接返回排序结果的排序都叫FileSort)(sort_buffer_size 有关)</span><br><span class="line"> 线程独占，同一时刻，存在多个sort_buffer 排序 </span><br><span class="line">尽量减少额外排序，通过索引直接返回有序数据 （where 条件和 order by 尽量使用相同索引且顺序一致） 目的减少fileSort</span><br><span class="line">  fileSort 优化</span><br><span class="line"></span><br><span class="line">    a. 两次扫描算法</span><br><span class="line">    </span><br><span class="line">    b. 一次扫描算法(效率高 但是内存开销大)  max_length_for_sort_data</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Group by 优化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用group by 并且避免排序结果消耗，可以指定 order by null (禁止排序)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>嵌套查询优化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 优点： 避免事务、死锁</span><br><span class="line">2. 可以考虑 join 替代(不会创建临时表)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>or 条件优化</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">or之间条件都必须为索引</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分页查询优化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">limit 1000,20</span><br><span class="line"></span><br><span class="line">1. join 自连接 避免全扫</span><br><span class="line">2. 转换为where + limit n 模式 （增加last_query_id 做条件）</span><br></pre></td></tr></table></figure>
+<ul>
+<li>SQL 提示 （非常熟悉）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. use index(xx)</span><br><span class="line">    explain select * from pgc_user use index(index_phone);</span><br><span class="line">2. ignore index(xx)</span><br><span class="line">   </span><br><span class="line">3. force index(xx)</span><br><span class="line">    explain select * from force index(index_id_phone_created) pgc_user;</span><br><span class="line"></span><br><span class="line">4. SQL_BUFFER_RESULT 强制生成临时缓存结果集，可以达到释放锁的目的</span><br><span class="line">    select SQL_BUFFER_RESULT * from pgc_user;</span><br></pre></td></tr></table></figure>
+<h3 id="拆分提高表的访问效率"><a href="#拆分提高表的访问效率" class="headerlink" title="拆分提高表的访问效率"></a>拆分提高表的访问效率</h3><ol>
+<li>垂直分表 (根据数据冷热常用与否)<br> 缺点：冗余管理维护 和 多表join<br> 优点：数据行小 ，给定数据也能放更多数据 减少IO</li>
+<li>水平拆分<br> (依据一列或多列) 综合考虑数据量的增长速度<br>a. 表很大 分割降低查询读的数据和索引页，索引层 提高查询速度<br>b. 表的数据具有天然独立性 比如地区、年份 、常用数据<br>c. 存放不同介质 </li>
+</ol>
+<h4 id="逆规范化"><a href="#逆规范化" class="headerlink" title="逆规范化"></a>逆规范化</h4><ol>
+<li>增加冗余列 避免查询是join操作</li>
+<li>增加派生列 经其他表数据计算而成 减少连接或避免使用集函数</li>
+<li>重新组表 （把大量用户热数据组合成一张新表，减少连接提高性能）</li>
+<li>分割表 (水平 垂直)</li>
+<li>完整性维护<br>a. 批处理 （实时要求不高情况）<br>b. 逻辑业务实现 (风险大且不易业务变更维护)<br>c. 触发器 (实时的 ，相应的逻辑在同一地方出现，易于维护)</li>
+</ol>
+<h4 id="中间表提高统计查询"><a href="#中间表提高统计查询" class="headerlink" title="中间表提高统计查询"></a>中间表提高统计查询</h4><pre><code>1.操作临时表和源表独立，不影响生产环境
+2.可以更灵活的增加修改字段或索引达到提高统计效用
+</code></pre><hr>
+<h2 id="锁问题"><a href="#锁问题" class="headerlink" title="锁问题"></a>锁问题</h2><p>mysql 表锁 行锁 页面锁（介于表锁和行锁之间）</p>
+<p>show status like ‘table%’ 判断</p>
+<p>myisam<br>    在执行查询和更新操作前 会自动给涉及表加锁，不需要用户干预</p>
+<pre><code>一般给加显示锁 是为了同一时间点对多个表的一致性读取数据
+</code></pre><p>myisam  系统变量 concurrent_insert </p>
+<p>show VARIABLES like “%concurrent_insert%”;</p>
+<p>0 不允许并发插入<br>1 默认 没有空洞情况下 允许<br>2 都允许 不管有没有空洞</p>
+<h5 id="myisam-锁调度"><a href="#myisam-锁调度" class="headerlink" title="myisam 锁调度"></a>myisam 锁调度</h5><p>myisam 读锁 写锁互斥 读写串行 同时申请写锁优先<br>low-priority-updates 给定读请求优先权利<br>SET LOW_PRIORITY_UPDATES=1</p>
+<p>max_write_lock_count </p>
+<h3 id="innodb-锁"><a href="#innodb-锁" class="headerlink" title="innodb 锁"></a>innodb 锁</h3><ol>
+<li>支持事务</li>
+<li>采用行级锁</li>
+</ol>
+<p>事务  ACID</p>
+<ul>
+<li><p>出现问题 </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a. 更新丢失 lost update  更新覆盖</span><br><span class="line"></span><br><span class="line">b. 脏读 dirty reads</span><br><span class="line"></span><br><span class="line">c. 不可重复读 Non-repeatable reads</span><br><span class="line"></span><br><span class="line">d. 幻读 phantom reads</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>隔离级别(数据读取一致性问题)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 读之前加锁，阻止其他事务对数据修改</span><br><span class="line"></span><br><span class="line">2. 不加锁，MVCC or MCC 数据多版本并发控制  (特定机制在某时间点生成数据快照，为用户提供一致性读取)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>乐观锁与悲观锁</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">乐观锁 </span><br><span class="line">非数据库自带的 是应用级别实现的，</span><br><span class="line">思想：乐观的认为操作不会导致冲突，在读之前不加锁，在更新的时候判断是否冲突 ,采用mvcc (核心就是每次更新数据就在当前版本加1)</span><br><span class="line"></span><br><span class="line">悲观锁</span><br><span class="line">数据库级别 事务实现</span><br><span class="line">思想：悲观的认为操作会导致冲突，每次操作数据都要获取锁才进行后续处理</span><br><span class="line"></span><br><span class="line">相较而言 悲观锁更安全但是需要耗费更多时间</span><br><span class="line"></span><br><span class="line">悲观锁的实现由两种 共享和排他</span><br></pre></td></tr></table></figure>
+<p>为解决不同隔离级别来平衡“隔离” ‘并发’的矛盾 定义4个级别</p>
+<p>select @@tx_isolation</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">事务隔离级别	 脏读	不可重复读	幻读</span><br><span class="line"></span><br><span class="line">读未提交（read-uncommitted）	是	是	是</span><br><span class="line">(语句级)不可重复读（read-committed）	否	是	是</span><br><span class="line">可重复读（repeatable-read）	否	否	是</span><br><span class="line">串行化（serializable）	否	否	否</span><br></pre></td></tr></table></figure>
+<ul>
+<li>innodb 行锁</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &quot;innodb_row_lock%&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>innodb_monitor</li>
+</ul>
+<p>CREATE TABLE innodb_monitor (a INT) ENGINE=INNODB;</p>
+<p>DROP TABLE innodb_monitor;</p>
+<ul>
+<li>innodb 行锁类型  (实际是对索引加锁)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">    共享锁（S） 又称 读锁 阻止其他事务更新操作(只能读不能修改)</span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    排他锁（X） 又称 写锁 </span><br><span class="line">    对于多个不同的事务，对同一个资源只能有一把锁,获得排他锁的事务可以操作数据，阻止其他事务获取当前数据集的共享读或排他写锁  可读（默认 read-committed）</span><br><span class="line">    </span><br><span class="line">    //查看锁</span><br><span class="line">    select * from information_schema.INNODB_TRX</span><br><span class="line">    </span><br><span class="line">    kill -9 mysql-thread-id</span><br><span class="line">    </span><br><span class="line"># 共享锁</span><br><span class="line">-- begin;</span><br><span class="line">-- select * from tb_en_cart where id=8 lock in share mode;</span><br><span class="line">-- commit;</span><br><span class="line"></span><br><span class="line"># 排他锁</span><br><span class="line">BEGIN;</span><br><span class="line">select * from tb_en_cart where id=8  for UPDATE;</span><br><span class="line">update tb_en_cart set quantity=0 where id=8;</span><br><span class="line">commit;</span><br><span class="line">    </span><br><span class="line">```   </span><br><span class="line"></span><br><span class="line">+ innodb 内部意向表锁类型</span><br></pre></td></tr></table></figure>
+<p> 意向共享锁（IS）<br>    事务给数据行加行共享锁前必须获取IS<br> 意向排他锁（IX）<br>    事务给数据行加行排他锁前必须获取IX</p>
+<p>意向锁是innodb 自动处理的，不需要干预</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ innodb 行锁实现方式</span><br></pre></td></tr></table></figure>
+<p>record lock 对索引项加锁</p>
+<p>gap lock 索引项之间间隙加锁</p>
+<p>next-key lock 对记录及前面或后面加锁 (注意 范围查询下并发锁冲突)</p>
+<p>备注：<br>    如果没有索引，innodb隐藏的通过聚簇索引对记录加锁，即意味着不通过索引条件检索数据，那么innodb将对表的所有记录加锁，效果跟表锁一样,实际应用中可导致大量锁冲突，影响并发性能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">聚簇索引即主键索引，是一种对磁盘上实际数据重新组织以按指定的一个或多个列的值排序，聚簇索引的索引页面指针指向数据页面。非聚簇索引（即第二主键索 引）不重新组织表中的数据，索引顺序与数据物理排列顺序无关。索引通常是通过B-Tree数据结构来描述，那么，聚簇索引的叶节点就是数据节点，而非聚簇 索引的叶节点仍然是索引节点，通常是一个指针指向对应的数据块</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 恢复和复制 对innodb锁机制的影响</span><br><span class="line"></span><br><span class="line">mysql 通过binlog 记录成功更新数据的语句，并由此实现mysql的恢复或者主从复制</span><br><span class="line"></span><br><span class="line">+ 三种日志格式四种复制模式</span><br><span class="line"></span><br><span class="line">https://dev.mysql.com/doc/refman/5.7/en/replication-rbr-usage.html</span><br><span class="line">https://dev.mysql.com/doc/refman/5.7/en/replication-sbr-rbr.html</span><br><span class="line">https://dev.mysql.com/doc/refman/5.7/en/replication-gtids-failover.html</span><br></pre></td></tr></table></figure>
+<p>三种日志格式</p>
+<ol>
+<li>SBL ( statement-based logging ) 基于事务提交先后顺序记录语句，（事务隔离级别最高，不允许幻读）<br>eg: 在 insert into tbl select or create table new_tbl select mysql对源表做了共享锁处理只读不可修改<br>如果是范围条件 ，innodb还会给源表加 next-key锁<br>相关设置：<br>innodb_locks_unsafe_for_binlog=off(默认)<br>采取措施：<br> a. innodb_locks_unsafe_for_binlog=on ，强制mvcc一致性读，但是binlog不能正确恢复或复制数据 （不推荐）<br> b. 利用 select * from tbl into outfile  和  load data infile 组合导入<br> c. 基于行的binlog格式和基于行的数据复制</li>
+</ol>
+<ol start="2">
+<li><p>RBL ( row-based logging ) 基于行</p>
+</li>
+<li><p>MFL (mixed-format logging)  混合格式<br>四种复制模式</p>
+</li>
+<li>SBR (statement-based replication)  最早支持的复制模式</li>
+<li>RBR (row-based replication)       5.1后支持，主要优点是支持对非安全sql的复制</li>
+<li>MIXED (mixed-format replication )  对安全的sql采用基于sql语句复制模式，对于非安全的sql采用基于行的复制模式<br>4.使用全局事务ID(GTIDs) 主要解决主从自动同步一致性问题  (查看  select @@global.read_only ;)</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 不同隔离级别下的一致性读及锁的策略 </span><br><span class="line">&gt; 同时还要考虑数据恢复与复制机制</span><br></pre></td></tr></table></figure>
+<p> 大部分sql而言 ，隔离级别越高，innodb给记录加的锁就越严格（尤其使用范围条件时候），产生锁冲突的可能越高，从而对并发性事务处理性能影响越大，实践中，尽量利用较低的隔离级别，以减少锁争抢，一般通过优化  默认 read-committd 足够，对于特殊的可以在业务逻辑设置 串行化级别隔离</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### innodb 表锁使用场景（大部分是行锁和事务处理）</span><br></pre></td></tr></table></figure>
+<ol>
+<li>事务需要更新大部分或全部数据，表又较大，如果用行锁，不仅效率低而且容易造成锁等待或者冲突</li>
+<li>事务涉及多个表，比较复杂，很可能引起死锁，造成大量事务回滚，考虑一次性锁定事务涉及的全部表</li>
+</ol>
+<p>注意：</p>
+<ol>
+<li>lock tables 可以给innodb加表级锁，但是表锁不是有innodb引擎管理而是有上层mysql server 负责 只有 autocommit=0 innodb_table_locks=1 innodb引擎才能自动识别表级别死锁</li>
+<li>加表锁正确姿势<br>set autocommit=0;<br>lock tables tb1 write,tb2 read<br>do somethin<br>commit;<br>unlock tables;</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 关于死锁</span><br><span class="line">1. myisam 表级锁  是自动的不需要额外干预 ，不会出现死锁 （同时申请 写锁优先）</span><br><span class="line"></span><br><span class="line">2. innodb 会发生死锁问题 (相互持有对方排他锁事务处理，造成循环-锁等待)</span><br><span class="line">    a. innodb 一般能自动检测，是一个事务释放并回滚，另一个事务完成事务</span><br><span class="line">    b. 涉及外部锁或表锁情况 ，不能完全自动检测到，需要设置 innodb_lock_wait_time_out (不仅可以解决死锁还能在并发事务挂起时避免长时间占用资源的阈值)</span><br><span class="line">&gt; 一般来说，死锁都是应用设计的问题，通过调整业务流程、数据库对象设计、事务大小以及sql优化，是可以避免绝大部分死锁问题</span><br><span class="line"></span><br><span class="line">### 避免死锁的方法</span><br></pre></td></tr></table></figure>
+<ol>
+<li>应用中，不同的程序并发存取多个表，应尽量约定以相同顺序来访问降低死锁机会</li>
+<li>事务中，如果有更新或其他操作 直接申请足够级别的锁 不要先申请共享，再然后申请排他</li>
+<li>不同隔离级别锁机制不同 repeatable-read(对相同记录同时申请排他锁，在没有记录情况下会成功) -&gt;read-commitd （但是也不能完全避免死锁发生）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">MRR</span><br><span class="line"></span><br><span class="line">https://dev.mysql.com/doc/refman/5.6/en/mrr-optimization.html</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>多范围读取优化提供了以下好处：</p>
+<p>基于索引元组，MRR使数据行能够按顺序访问，而不是按随机顺序访问。服务器获取满足查询条件的一组索引元组，并按照数据行ID顺序对它们进行排序，并使用排序后的元组按顺序检索数据行。这使得数据访问效率更高，成本更低。</p>
+<p>MRR支持批量处理需要通过索引元组访问数据行的操作的密钥访问请求，例如范围索引扫描和使用连接属性索引的等连接。MRR迭代一系列索引范围以获取合格的索引元组。随着这些结果的积累，它们将用于访问相应的数据行。在开始读取数据行之前，不需要获取所有索引元组。<br><code>`</code></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016-11-15/数据库对象优化.html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">数据库对象优化</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016-10-19/SQL语句优化步骤 (一).html">
+        <span class="next-text nav-default">SQL语句优化步骤 (一)</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

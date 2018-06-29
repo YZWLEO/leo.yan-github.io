@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="mysql 引擎使用背后"/>
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2016-10-08/mysql 引擎使用背后.html"/>
+
+
+<meta name="description" content="mysql 主要引擎123456789CSV	YES	CSV storage engine	NO	NO	NOMRG_MYISAM	YES	Collection of identical MyISAM tables	NO	NO	NOMyISAM	YES	MyISAM storage engine	NO	NO	NOBLACKHOLE	YES	/dev/null storage engine (anyt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql 引擎使用背后">
+<meta property="og:url" content="http://mlyan.top/2016-10-08/mysql 引擎使用背后.html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="mysql 主要引擎123456789CSV	YES	CSV storage engine	NO	NO	NOMRG_MYISAM	YES	Collection of identical MyISAM tables	NO	NO	NOMyISAM	YES	MyISAM storage engine	NO	NO	NOBLACKHOLE	YES	/dev/null storage engine (anyt">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/mysql/mysql_engines.png">
+<meta property="og:updated_time" content="2018-06-29T06:23:39.365Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql 引擎使用背后">
+<meta name="twitter:description" content="mysql 主要引擎123456789CSV	YES	CSV storage engine	NO	NO	NOMRG_MYISAM	YES	Collection of identical MyISAM tables	NO	NO	NOMyISAM	YES	MyISAM storage engine	NO	NO	NOBLACKHOLE	YES	/dev/null storage engine (anyt">
+<meta name="twitter:image" content="http://mlyan.top/images/mysql/mysql_engines.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> mysql 引擎使用背后 - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          mysql 引擎使用背后
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 08 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="mysql-主要引擎"><a href="#mysql-主要引擎" class="headerlink" title="mysql 主要引擎"></a>mysql 主要引擎</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CSV	YES	CSV storage engine	NO	NO	NO</span><br><span class="line">MRG_MYISAM	YES	Collection of identical MyISAM tables	NO	NO	NO</span><br><span class="line">MyISAM	YES	MyISAM storage engine	NO	NO	NO</span><br><span class="line">BLACKHOLE	YES	/dev/null storage engine (anything you write to it disappears)	NO	NO	NO</span><br><span class="line">InnoDB	DEFAULT	Supports transactions, row-level locking, and foreign keys	YES	YES	YES</span><br><span class="line">PERFORMANCE_SCHEMA	YES	Performance Schema	NO	NO	NO</span><br><span class="line">ARCHIVE	YES	Archive storage engine	NO	NO	NO</span><br><span class="line">MEMORY	YES	Hash based, stored in memory, useful for temporary tables	NO	NO	NO</span><br><span class="line">FEDERATED	NO	Federated MySQL storage engine</span><br></pre></td></tr></table></figure>
+<ul>
+<li>常用的<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">myisam &lt;=5.5 默认 </span><br><span class="line">innodb &gt;5.5 默认</span><br><span class="line">blackhole  主从同步时候 常用blackhole 做代理binlog分发减少master压力</span><br><span class="line">memory 默认hash 索引</span><br><span class="line">BDB</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>摘自&lt;&lt;数据库开发、优化与管理维护&gt;&gt;</p>
+</blockquote>
+<p><img src="/images/mysql/mysql_engines.png" alt="image"></p>
+<ul>
+<li>myisam 优缺点</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">优点</span><br><span class="line">1. 5.5以前默认存储引擎</span><br><span class="line">2. 访问速度快</span><br><span class="line">3. 对事务完整性要求不高，或者以select /insert 为主的应用 （文章、帖子、日志类）都可使用</span><br><span class="line">4. 物理存储分为 .frm 存储定义（一种数据结构） .myd 存储数据 .myi 存储索引( 数据与索引分开存储 可以分别指定目录 平均分布磁盘IO，获得更快的速度)</span><br><span class="line">5. 支持静态表（固定长度）、动态表、压缩表 存储格式</span><br><span class="line">6. 支持全文索引</span><br><span class="line">7. 并发读写互斥的， 默认写请求优先级高</span><br><span class="line">8. 支持空间数据对象</span><br><span class="line">9. 数据拷贝恢复容易且快速</span><br><span class="line">10. 组合索引可以不是第一列</span><br><span class="line">11. 支持表级锁，为CUAD给表自动加锁，不需额外干预</span><br><span class="line">12. 保存现有总记录行数 </span><br><span class="line">13. 非聚簇索引，且叶子节点指向对应数据块的指针</span><br><span class="line">14. 主健索引与二级索引无区别都指向物理行号，叶子节点存放的是列值和行号，对应数据的物理地址</span><br><span class="line">缺点</span><br><span class="line">1. 不支持事务、不支持行级锁</span><br><span class="line">2. 不支持外键</span><br><span class="line">3. 不支持数据缓存</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Innodb 优缺点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1. 支持事务 ACID </span><br><span class="line">2. 支持全文索引 &gt;=5.6</span><br><span class="line">3. 外键约束</span><br><span class="line">4. 提供共享表与多表存储方式 .frm .ibd 物理文件</span><br><span class="line">5. 支持数据缓存</span><br><span class="line">6. 支持索引缓存</span><br><span class="line">7. 支持行级锁</span><br><span class="line">8. 支持sphinx插件全文索引</span><br><span class="line">9. 主键索引叶子节点直接存储数据记录，key为主键，称为聚簇索引</span><br><span class="line">10. 二级索引包叶子节点含主键和key字段(所以key不能太长，且保证唯一)而不是行指针，即二级索引先通过找到主键值，然后通过主键值才能找到完整记录 ,走两个B树（可以通过索引覆盖，让二级索引覆盖要查询的字段）</span><br><span class="line"></span><br><span class="line">缺点</span><br><span class="line">1. 单表限制64TB，一般受制于操作系统文件大小2G</span><br><span class="line">2. 组合索引，自动增长列必须是组合索引第一列</span><br><span class="line">3. 不保存现有记录行数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>聚簇索引</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Innodb 数据文件本身也是索引文件，</span><br><span class="line">索引的顺序就是数据存放的顺序，一张表就只能一个聚簇索引</span><br><span class="line">一般来讲，聚簇索引查询要比非聚簇索引要高效很多，特别是范围查询时候</span><br><span class="line"></span><br><span class="line">优点：</span><br><span class="line">1. 数据行和索引保存在同一B-Tree中，通过聚簇索引可以直接获取数据而非聚簇索引要多次IO</span><br><span class="line">2. 聚簇索引对主键范围查询的效率很高,因为存放时候按主键顺序存放</span><br><span class="line">3. 二级索引使用索引覆盖可以直接使用叶节点的主键值</span><br><span class="line">缺点：</span><br><span class="line">1. 插入速度依赖插入顺序，顺序导入Innodb引擎表是最快的</span><br><span class="line">2. 插入新行或更新主键导致聚集索引“页分裂”问题，占用更多磁盘空间</span><br><span class="line">3. 导致全表扫描</span><br><span class="line">4. 二级索引两次B-Tree查找问题</span><br></pre></td></tr></table></figure>
+<ul>
+<li>非聚簇索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">myisam 数据文件与索引文件分离</span><br><span class="line">非聚簇索引指的就是数据行和对应的键不存在一起，</span><br><span class="line">非聚簇索引中叶子结点一般存的是数据行的引用,</span><br><span class="line">mysql myisam 引擎主键索引与二级索引叶子节点无任何区别，存储主键值对应物理地址位置</span><br></pre></td></tr></table></figure>
+<h5 id="mysql获取数据的数据结构-Btree索引和Hash索引"><a href="#mysql获取数据的数据结构-Btree索引和Hash索引" class="headerlink" title="mysql获取数据的数据结构 Btree索引和Hash索引"></a>mysql获取数据的数据结构 Btree索引和Hash索引</h5><blockquote>
+<p>Innodb和MyISAM默认的索引是Btree索引；而Mermory默认的索引是Hash索引</p>
+</blockquote>
+<ul>
+<li><p>Hash索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">本质上是对要进行hash的列就行散列运算，维护hash数组</span><br><span class="line"></span><br><span class="line">优点：</span><br><span class="line">一次定位，精确匹配数据，效率高 ,适合key-value简单查询</span><br><span class="line">缺点：</span><br><span class="line">1. 每次全部扫表</span><br><span class="line">2. hash比较的是计算值，对范围查询无解</span><br><span class="line">3. hash值安装顺序排序，但是不能保证hash值映射的真正数据也是按此顺序排序，无法加速排序操作</span><br><span class="line">4. 不能用于部分索引健搜索数据，因为组合索引在计算hash值是一起计算的</span><br><span class="line">5. hash值大量重复且数据量大时，其检索效率没有Btree高</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Btree 索引（mysql 实际是B+Tree 改良结构）(Blanced Tree 不是二叉树)</p>
+<blockquote>
+<p>注：B+树 在myisam和innodb实现的存储结构区别</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>平衡二叉树是基于二分法的策略提高数据的查找速度的二叉树的数据结构</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">查询算法：</span><br><span class="line">1. 顺序查找 （linear search ） O(n)时间复杂度  </span><br><span class="line">2. 二分查找  (binary search )  将数据有序排列,数据分半执行数据查找  </span><br><span class="line">3. 二叉树查找（binary tree search）O(log2N） 既有链表的好处又有数组的好处，是综合的折中方案</span><br><span class="line">4. 链表 删除与插入元素很快，但查找很慢</span><br><span class="line">5. 数组的搜索比较方便，但删除和插入元素较麻烦</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">在数据之外，数据库系统还维护着满足特定查找算法的数据结构，</span><br><span class="line">这些数据结构以某种方式引用（指向）数据，这样就可以在这些数据结构上实现高级查找算法。</span><br><span class="line">这种数据结构，就是索引</span><br><span class="line"></span><br><span class="line">大部分数据库系统及文件系统都采用B-Tree或其变种B+Tree作为索引结构，主要为排序和检索的效率</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">二叉树: 综合了数组和链表的优点和缺点(数组插入效率低,链表查找效率低),</span><br><span class="line">支持动态的插入和查找，保证操作在O(height)时间,如果数据有序（倾斜）发生退化为线性查找 O(N)时间复杂度,平均时间复杂度O(H)</span><br><span class="line"></span><br><span class="line">红黑树： 属于二叉树，是平衡检索树，为避免不平衡，增加颜色属性来保持平衡 旋转、高度有限，查询和普通二叉树耗时可以忽略，插入和删除操作和普通的二叉搜索树时间上的开销略有增加,因为要执行颜色变换和旋转</span><br><span class="line"></span><br><span class="line">B-Tree：（是一种平衡的多路查找树） 有序数组+平衡多叉树 ，基于范围查询效率低</span><br><span class="line">B+Tree： （B-树的改良升级）序数组链表+平衡多叉树， 叶子节点包含了全部关键字的信息，且叶子节点本身依关键字自小而大顺序链接。所以任何关键字的查找都必须走一条从根节点到叶子节点的路，支持基于范围的查询。</span><br><span class="line"></span><br><span class="line">对比B-Tree /B+Tree</span><br><span class="line">（1）B+跟B树不同B+树的非叶子节点不保存关键字记录的指针，这样使得B+树每个节点所能保存的关键字大大增加，树的层级更少所以查询数据更快；</span><br><span class="line"></span><br><span class="line">（2）B+树叶子节点保存了父节点的所有关键字和关键字记录的指针，每个叶子节点的关键字从小到大链接；</span><br><span class="line"></span><br><span class="line">（3）B+树的根节点关键字数量和其子节点个数相等;</span><br><span class="line"></span><br><span class="line">（4）B+的非叶子节点只进行数据索引，不会存实际的关键字记录的指针，所有数据地址必须要到叶子节点才能获取到，所以每次数据查询的次数都一样,查询速度更稳定；</span><br></pre></td></tr></table></figure>
+<h4 id="综述-vs-优化策略"><a href="#综述-vs-优化策略" class="headerlink" title="综述 vs 优化策略"></a>综述 vs 优化策略</h4><ol>
+<li>数据库性能瓶颈大部分来自于磁盘IO</li>
+<li>大部分情况下磁盘顺序读写比随机读写的性能要高</li>
+<li>基本存储结构：磁盘被分为许多块（block、page），块与块之间以链表关联，数据是以行为单位存放在块中，磁盘一次IO一般至少读出或写入一个完整的块</li>
+<li>基础索引算法无外乎 B+Tree /Hash/RTree/Full-text</li>
+<li>常用引擎 myisam innodb</li>
+<li>操作访问 CURD</li>
+</ol>
+<ul>
+<li>了解以上有助于了解sql原理及执行流程为管理优化sql提供不同策略保障</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016-10-19/SQL语句优化步骤 (一).html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">SQL语句优化步骤 (一)</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016-10-05/VMWare 虚拟机的三种网络模式及联网解决方案.html">
+        <span class="next-text nav-default">VMWare网络模式</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="SQL语句优化步骤 (一)"/>
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="Leo.Yan">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="http://mlyan.top/2016-10-19/SQL语句优化步骤 (一).html"/>
+
+
+<meta name="description" content="走进 information_schema  参考链接 mysql-doc/5.7     12345678910111213141. mysql系统自带的数据库 ，都为memory 引擎2. 注意字符集 mysql是c/s架构     + 服务端  character_set_server、character_set_system    + 客户端 character_set_client、c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL语句优化步骤 (一)">
+<meta property="og:url" content="http://mlyan.top/2016-10-19/SQL语句优化步骤 (一).html">
+<meta property="og:site_name" content="Leo.Yan">
+<meta property="og:description" content="走进 information_schema  参考链接 mysql-doc/5.7     12345678910111213141. mysql系统自带的数据库 ，都为memory 引擎2. 注意字符集 mysql是c/s架构     + 服务端  character_set_server、character_set_system    + 客户端 character_set_client、c">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mlyan.top/images/mysql/mysql_schema.png">
+<meta property="og:image" content="http://mlyan.top/images/mysql/mysql.png">
+<meta property="og:image" content="http://mlyan.top/images/mysql/mysql_sql.png">
+<meta property="og:updated_time" content="2018-06-29T06:24:21.900Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL语句优化步骤 (一)">
+<meta name="twitter:description" content="走进 information_schema  参考链接 mysql-doc/5.7     12345678910111213141. mysql系统自带的数据库 ，都为memory 引擎2. 注意字符集 mysql是c/s架构     + 服务端  character_set_server、character_set_system    + 客户端 character_set_client、c">
+<meta name="twitter:image" content="http://mlyan.top/images/mysql/mysql_schema.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?45ac782cbf926280d14289d0e9204147";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+    <title> SQL语句优化步骤 (一) - Leo.Yan </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Leo.Yan</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/">
+                            
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SQL语句优化步骤 (一)
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 19 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <ul>
+<li>走进 information_schema <blockquote>
+<p><a href="https://dev.mysql.com/doc/refman/5.7/en/information-schema.html" target="_blank" rel="noopener">参考链接 mysql-doc/5.7</a></p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/images/mysql/mysql_schema.png" alt="image"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1. mysql系统自带的数据库 ，都为memory 引擎</span><br><span class="line">2. 注意字符集 mysql是c/s架构 </span><br><span class="line">    + 服务端  character_set_server、character_set_system</span><br><span class="line">    + 客户端 character_set_client、character_set_connection、character_set_results</span><br><span class="line"></span><br><span class="line">3. 权限授权依据  SCHEMA_PRIVILEGES-&gt; TABLE_PRIVILEGES -&gt;COLUMN_PRIVILEGES -&gt;USER_PRIVILEGES </span><br><span class="line"></span><br><span class="line">4.实体对象相关重要  INNODB_SYS_COLUMNS 、ENGINES 、PLUGINS 、SCHEMATA</span><br><span class="line">5.管理维护依据相关重要表 GLOBAL_STATUS ，GLOBAL_VARIABLES，SESSION_STATUS，SESSION_VARIABLES、PARTITIONS </span><br><span class="line">、PROCESSLIST、INNODB_BUFFER_POOL_STATS </span><br><span class="line">、INNODB_BUFFER_PAGE*、</span><br><span class="line">6. 表及表空间 TABLES，TABLESPACES，INNODB_SYS_TABLES ，INNODB_SYS_TABLESPACES </span><br><span class="line">7. 优化相关 OPTIMIZER_TRACE 、PROFILING</span><br><span class="line">8. 事务和锁相关 INNODB_LOCKS、INNODB_LOCK_WAITS、INNODB_TRX</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">常用  show [global] status like [%com_%|innodb_%|connections%|uptime%|slow_queries%]</span><br><span class="line">常用  show processlist 当前线程状态、锁状态、</span><br><span class="line">常用  explain sql分析低效sql执行计划</span><br><span class="line">常用  explain extended [sql] show warnings  显示filterd 字段和 warnings中 message信息</span><br><span class="line">      explain partitions sql 查看语句访问分区</span><br><span class="line"></span><br><span class="line">常用  show profiles ;show profile [cpu io all ] for queryId;   </span><br><span class="line"></span><br><span class="line">常用    show variables like &apos;%optimizer_trace%&apos;; </span><br><span class="line">        select * from information_schema.optimizer_trace</span><br><span class="line"></span><br><span class="line">//set optimizer_trace=&apos;enabled=on&apos;;    --- 开启trace</span><br><span class="line">//set end_markers_in_json=on;    --- 增加trace中注释</span><br></pre></td></tr></table></figure>
+<h4 id="典型mysql体系架构-C-S-架构-（四层架构设计）"><a href="#典型mysql体系架构-C-S-架构-（四层架构设计）" class="headerlink" title="典型mysql体系架构 C/S 架构 （四层架构设计）"></a>典型mysql体系架构 C/S 架构 （四层架构设计）</h4><p><a href="https://www.processon.com/view/59b69a09e4b0d3fbea275579?fromnew=1" title="mysql体系架构 C/S 架构 " target="_blank" rel="noopener"><img src="/images/mysql/mysql.png" alt="image"></a></p>
+<h4 id="典型mysql执行流程"><a href="#典型mysql执行流程" class="headerlink" title="典型mysql执行流程"></a>典型mysql执行流程</h4><p><a href="https://www.processon.com/view/5aa73c85e4b05a5cc2f33c72?fromnew=1" title="典型mysql执行流程" target="_blank" rel="noopener"><img src="/images/mysql/mysql_sql.png" alt="image"> </a> </p>
+<ul>
+<li>典型mysql执行流程<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1. 连接</span><br><span class="line">   1.1 通过mysql客户端服务端通信协议发起连接并发送Query请求,在此连接管理模块设置监听</span><br><span class="line">   1.2 服务端连接线程接收Query请求，check 用户授权</span><br><span class="line">   1.3 check通过，线程管理模块从‘连接池’ 捞一个缓存的空闲连接线程对接客户端Query</span><br><span class="line">   </span><br><span class="line">2. 处理</span><br><span class="line">   2.1 check 查询缓存是否开启，若开启，Query 做hash运算，计算key值并check缓存是否命中，命中就进入结果处理返回流程</span><br><span class="line">   2.2 sql语法解析，包括词法解析、语法规则合法性验证并生成对应解析树</span><br><span class="line">   2.3 预处理，解决词法语法不能解决的语义问题、检查权限并生成新的解析树</span><br><span class="line">   2.4 查询优化器，优化器选择最优算法生成sql执行计划</span><br><span class="line">   2.5 check访问控制，包括表、字段访问权限，table-cache及是否获取锁，查询执行引擎根据不同meta信息调用相应存储引擎接口处理，若日志打开并且引擎需要可记录二进制日志，完成sql执行计划</span><br><span class="line">3. 结果</span><br><span class="line">   3.1 Query 请求完成后，将结果集返回给连接管理模块&quot;监听标识&quot;</span><br><span class="line">   3.2 check 是否需要放入插入缓存，包装返回给mysql客户端结果</span><br><span class="line">   3.3 断开与客户端连接,释放资源</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="典型索引优化原则"><a href="#典型索引优化原则" class="headerlink" title="典型索引优化原则"></a>典型索引优化原则</h4><blockquote>
+<p>索引原则1<br>搜索的索引列，不一定是所要选择的列</p>
+</blockquote>
+<blockquote>
+<p>索引原则2<br>使用唯一索引，索引基数越大越好，注意数据倾斜导致索引反而使搜索变慢</p>
+</blockquote>
+<blockquote>
+<p>索引原则3<br>使用短索引，前缀索引，较小的索引涉及的磁盘io较少，相应的查询更快，且较短的健值，在索引缓存有限情况下能容纳更多健值，节约资源</p>
+</blockquote>
+<blockquote>
+<p>索引原则4<br>利用最左前缀匹配原则，根据业务需要合理建立多列组合索引</p>
+</blockquote>
+<blockquote>
+<p>索引原则5 不过度索引，一般单表不超过5个，太多索引不仅浪费磁盘空间，导致写性能下降，甚至导致mysql 查询优化找不到最好的索引，发生全表扫描，在数据量大或并发情况下严重影响性能</p>
+</blockquote>
+<blockquote>
+<p>索引原则6 根据引擎合理使用索引 比如myisam、innodb 分别对应的 主键索引与二级索引B-Tree数据结构区别 </p>
+</blockquote>
+<h4 id="典型索引业务场景"><a href="#典型索引业务场景" class="headerlink" title="典型索引业务场景"></a>典型索引业务场景</h4><ol>
+<li>匹配全值 精确查找数据，根据需要建立条件索引</li>
+<li>匹配值范围查询,根据索引类型，范围查询适合Btree索引类型</li>
+<li>匹配最左前缀，多列组合索引原则，避免二次回表查询</li>
+<li>匹配列前缀</li>
+<li>列名索引 null 也能使用索引</li>
+<li>ICP&gt;=5.6 Index Condition Pushdown 注意Explain Extra:using index condition</li>
+<li>% 开始的like查询 不能利用Btree索引 (可以考虑全文索引|考虑二级索引回表查询) </li>
+<li>数据类型隐式转换不会使用索引,（保持类型一致即可）</li>
+<li>or 分割的条件，前有索引，后没索引则不会使用索引 </li>
+</ol>
+<h4 id="查看索引使用情况"><a href="#查看索引使用情况" class="headerlink" title="查看索引使用情况"></a>查看索引使用情况</h4><ol>
+<li>information_schema.GLOBAL_STATUS</li>
+<li>show status like ‘handler_read%’<blockquote>
+<p>观察<br>handler_read_key(太小)/handler_read_rnd_next （很大） 说明索引使用不理想，考虑优化</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="MRR-Multi-Range-Read"><a href="#MRR-Multi-Range-Read" class="headerlink" title="MRR (Multi-Range Read)"></a>MRR (Multi-Range Read)</h4><blockquote>
+<p>随机 IO 转化为顺序 IO 以降低查询过程中 IO 开销的一种手段<br><a href="https://dev.mysql.com/doc/refman/5.6/en/mrr-optimization.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/mrr-optimization.html</a></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">多范围读取优化提供了以下好处：</span><br><span class="line"></span><br><span class="line">基于索引元组，MRR使数据行能够按顺序访问，而不是按随机顺序访问。</span><br><span class="line">服务器获取满足查询条件的一组索引元组，并按照数据行ID顺序对它们进行排序，并使用排序后的元组按顺序检索数据行。</span><br><span class="line">这使得数据访问效率更高，成本更低。</span><br><span class="line"></span><br><span class="line">MRR支持批量处理需要通过索引元组访问数据行的操作的密钥访问请求，</span><br><span class="line">例如范围索引扫描和使用连接属性索引的等连接。</span><br><span class="line">MRR迭代一系列索引范围以获取合格的索引元组。</span><br><span class="line">随着这些结果的积累，它们将用于访问相应的数据行。</span><br><span class="line">在开始读取数据行之前，不需要获取所有索引元组。</span><br></pre></td></tr></table></figure>
+<h4 id="ICP-Index-Condition-Pushdown"><a href="#ICP-Index-Condition-Pushdown" class="headerlink" title="ICP( Index_Condition_Pushdown)"></a>ICP( Index_Condition_Pushdown)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. ICP能减少Server层访问存储引擎的次数和引擎层访问基表的次数</span><br><span class="line">2. 对于InnoDB表，ICP只适用于辅助索引</span><br><span class="line">3. 默认关闭  set optimizer_switch=&quot;index_condition_pushdown=on</span><br><span class="line">4. 主要对where的各种条件查询索引优化处理 </span><br><span class="line">5. 当 SQL 使用覆盖索引时但只检索部分数据时，ICP 无法使用</span><br><span class="line">6. ICP的加速效果取决于在存储引擎内通过ICP筛选掉的数据的比例</span><br></pre></td></tr></table></figure>
+<h4 id="BAK-Batched-Key-Access-gt-5-6-出现"><a href="#BAK-Batched-Key-Access-gt-5-6-出现" class="headerlink" title="BAK (Batched Key Access)  &gt;=5.6 出现"></a>BAK (Batched Key Access)  &gt;=5.6 出现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">原理：</span><br><span class="line"></span><br><span class="line">对于多表join语句，当MySQL使用索引访问第二个join表的时候，</span><br><span class="line">使用一个join buffer来收集第一个操作对象生成的相关列值。</span><br><span class="line">BKA构建好key后，批量传给引擎层做索引查找。</span><br><span class="line">key是通过MRR接口提交给引擎的. 这样，MRR使得查询更有效率</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BKA主要是指在被join表上有索引可以利用，</span><br><span class="line">那么就在行提交给被join的表之前，</span><br><span class="line">对这些行按照索引字段进行排序，因此减少了随机IO</span><br></pre></td></tr></table></figure>
+<h4 id="BNL-Block-Nested-Loop-gt-5-1"><a href="#BNL-Block-Nested-Loop-gt-5-1" class="headerlink" title="BNL (Block Nested-Loop ) &gt;=5.1"></a>BNL (Block Nested-Loop ) &gt;=5.1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用于当被join的表上无索引</span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016-11-01/SQL语句优化步骤 (二).html">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">SQL语句优化步骤 (二)</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016-10-08/mysql 引擎使用背后.html">
+        <span class="next-text nav-default">mysql 引擎使用背后</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2010 -
+    
+    2018
+    <span class="footer-author">lime0413©gmail.com.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
